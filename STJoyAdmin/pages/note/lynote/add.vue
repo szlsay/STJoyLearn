@@ -28,11 +28,6 @@
 
 <script>
   import { validator } from '@/js_sdk/validator/ly-note.js';
-
-  const db = uniCloud.database();
-  const dbCmd = db.command;
-  const dbCollectionName = 'ly-note';
-
   function getValidator(fields) {
     let result = {}
     for (let key in validator) {
@@ -42,9 +37,6 @@
     }
     return result
   }
-
-  
-
   export default {
     data() {
       let formData = {
@@ -81,13 +73,8 @@
           uni.hideLoading()
         })
       },
-
-      /**
-       * 提交表单
-       */
       submitForm(value) {
-        // 使用 clientDB 提交数据
-        return db.collection(dbCollectionName).add(value).then((res) => {
+				uniCloud.importObject("ylnote").add(value).then((res) => {
           uni.showToast({
             title: '新增成功'
           })
