@@ -145,7 +145,22 @@
 	],
 	"subPackages": [{
 			"root": "pages/note",
-			"pages": []
+			"pages": [{
+				"path": "lynote/add",
+				"style": {
+					"navigationBarTitleText": "新增"
+				}
+			}, {
+				"path": "lynote/edit",
+				"style": {
+					"navigationBarTitleText": "编辑"
+				}
+			}, {
+				"path": "lynote/list",
+				"style": {
+					"navigationBarTitleText": "列表"
+				}
+			}]
 		},
 		{
 			"root": "pages/system",
