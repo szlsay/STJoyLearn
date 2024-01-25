@@ -1,7 +1,7 @@
 <template>
 	<uni-popup ref="popup" type="center" :animation="false" :is-mask-click="false">
 		<view class="popup-box">
-			<view class="title">新增日记</view>
+			<view class="title">{{ formDataId ? "修改日记 " : "新增日记" }}</view>
 			<uni-forms ref="form" :model="formData" validateTrigger="bind">
 				<uni-forms-item name="title" label="标题">
 					<uni-easyinput placeholder="标题" v-model="formData.title" trim="both"></uni-easyinput>
@@ -38,6 +38,7 @@
 				"content": ""
 			}
 			return {
+				formDataId: null,
 				formData,
 				rules: {
 					...getValidator(Object.keys(formData))
@@ -49,14 +50,46 @@
 		},
 		methods: {
 			add() {
+				this.edit({
+					_id: null
+				})
+			},
+			edit(row) {
 				this.formData = {
 					"title": "",
 					"content": ""
 				}
 				this.$refs.popup.open('center')
+				if (row._id) {
+					this.formDataId = row._id
+					this.formData = {
+						"title": row.title,
+						"content": row.content
+					}
+					// this.getDetail()
+				} else {
+					this.formDataId = null
+				}
 			},
 			close() {
 				this.$refs.popup.close()
+			},
+			getDetail() {
+				uni.showLoading({
+					mask: true
+				})
+				uniCloud.importObject("ylnote").get(this.formDataId).then((data) => {
+					if (data) {
+						this.formData = data
+					}
+				}).catch((err) => {
+					uni.showModal({
+						content: err.message || '请求服务失败',
+						showCancel: false
+					})
+				}).finally(() => {
+					uni.hideLoading()
+				})
 			},
 			submit() {
 				uni.showLoading({
@@ -69,9 +102,16 @@
 				})
 			},
 			submitForm(value) {
-				uniCloud.importObject("ylnote").add(value).then((res) => {
+				let requestHandle
+				if (this.formDataId) {
+					requestHandle = uniCloud.importObject("ylnote").update(this.formDataId, value)
+				} else {
+					requestHandle = uniCloud.importObject("ylnote").add(value)
+				}
+				requestHandle.then((res) => {
+					const title = this.formDataId ? "修改成功" : "新增成功"
 					uni.showToast({
-						title: '新增成功'
+						title: title
 					})
 					this.$emit("finish")
 					this.close()

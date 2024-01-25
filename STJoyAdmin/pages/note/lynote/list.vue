@@ -40,7 +40,7 @@
             <uni-td align="center">{{item.content}}</uni-td>
             <uni-td align="center">
               <view class="uni-group">
-                <button @click="navigateTo('./edit?id='+item._id, false)" class="uni-button" size="mini" type="primary">修改</button>
+                <button @click="onEdit(item)" class="uni-button" size="mini" type="primary">修改</button>
                 <button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
               </view>
             </uni-td>
@@ -114,6 +114,9 @@
     methods: {
 			onAdd() {
 				this.$refs.notePopup.add()
+			},
+			onEdit(row) {
+				this.$refs.notePopup.edit(row)
 			},
       onqueryload(data) {
         this.exportExcelData = data
