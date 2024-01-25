@@ -8,7 +8,7 @@
       <view class="uni-group">
         <input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
         <button class="uni-button" type="default" size="mini" @click="search">搜索</button>
-        <button class="uni-button" type="default" size="mini" @click="navigateTo('./add')">新增</button>
+        <button class="uni-button" type="default" size="mini" @click="onAdd">新增</button>
         <button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length" @click="delTable">批量删除</button>
         <download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData" :type="exportExcel.type" :name="exportExcel.filename">
           <button class="uni-button" type="primary" size="mini">导出 Excel</button>
@@ -52,11 +52,12 @@
       </unicloud-db>
     </view>
   </view>
+	<NotePopup ref="notePopup" @finish="loadData"></NotePopup>
 </template>
 
 <script>
   import { enumConverter, filterToWhere } from '@/js_sdk/validator/ly-note.js';
-
+  import NotePopup from './NotePopup.vue'
   const db = uniCloud.database()
   // 表查询配置
   const dbOrderBy = '' // 排序字段
@@ -71,6 +72,7 @@
   }
 
   export default {
+		components: {NotePopup},
     data() {
       return {
         collectionList: "ly-note",
@@ -110,6 +112,9 @@
       this.$refs.udb.loadData()
     },
     methods: {
+			onAdd() {
+				this.$refs.notePopup.add()
+			},
       onqueryload(data) {
         this.exportExcelData = data
       },

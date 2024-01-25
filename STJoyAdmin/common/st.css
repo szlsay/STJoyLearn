@@ -1,0 +1,8 @@
+/* 自定义全局样式 */
+	::v-deep .is-disabled {
+		color: black !important;
+	}
+	
+	::v-deep .uni-button::after {
+		border: none;
+	}
