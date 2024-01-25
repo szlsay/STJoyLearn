@@ -15,16 +15,6 @@ module.exports = {
 			throw new Error('token凭证不存在，请重新登录')
 		}
 	},
-	async update(value) {
-		if (this.userInfo.errCode) {
-			return this.userInfo
-		}
-		value.user_id = this.userInfo.uid
-		value.create_time = Date.now()
-		value.update_time = Date.now()
-		const result = await db.collection(dbCollectionName).add(value)
-		return result
-	},
 	async add(value) {
 		if (this.userInfo.errCode) {
 			return this.userInfo
@@ -35,12 +25,12 @@ module.exports = {
 		const result = await db.collection(dbCollectionName).add(value)
 		return result
 	},
-	async get(id) {
+	async get(_id) {
 		if (this.userInfo.errCode) {
 			return this.userInfo
 		}
 		const result = await db.collection(dbCollectionName).where({
-			_id: id,
+			_id,
 			user_id: this.userInfo.uid
 		}).get()
 		if (result && result.data && result.data.length === 1) {
@@ -55,5 +45,13 @@ module.exports = {
 		} else {
 			return {}
 		}
-	}
+	},
+	async update(_id, value) {
+		if (this.userInfo.errCode) {
+			return this.userInfo
+		}
+		value.update_time = Date.now()
+		const result = await db.collection(dbCollectionName).doc(_id).update(value)
+		return result
+	},
 }
