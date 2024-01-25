@@ -1,8 +1,5 @@
 <!-- 账号密码登录页 -->
 <template>
-	<view class="login-bg">
-		<image :src="loginbg" mode="aspectFill"></image>
-	</view>
 	<view class="uni-content">
 		<view class="login-logo">
 			<image :src="logo"></image>
@@ -54,7 +51,6 @@
 				"needCaptcha": false,
 				"focusUsername": false,
 				"focusPassword": false,
-				"loginbg": "/static/login-bg.webp",
 				"logo": "/static/logo.png",
 				"existAdmin": true
 			}
@@ -165,16 +161,6 @@
 
 <style lang="scss" scoped>
 	@import "@/uni_modules/uni-id-pages/common/login-page.scss";
-	
-	.login-bg{
-		position: fixed;
-		inset: 0;
-		z-index: -1;
-		image{
-			width: 100%;
-			height: 100%;
-		}
-	}
 
 	@media screen and (min-width: 690px) {
 		.uni-content {
