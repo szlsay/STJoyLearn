@@ -10,3 +10,6 @@
 
 // 下面示例查询uni-id-users表的所有数据
 db.collection('uni-id-users').get();
+db.collection("ly-note").where({
+	user_id: '65b07f948b0da4a4e471d269'
+}).get();

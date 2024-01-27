@@ -1,4 +1,5 @@
 const db = uniCloud.database();
+const dbJQL = uniCloud.databaseForJQL()
 const dbCmd = db.command;
 const dbCollectionName = 'ly-note';
 const uniID = require('uni-id-common')
@@ -66,8 +67,43 @@ module.exports = {
 			return this.userInfo
 		}
 		const result = await db.collection(dbCollectionName).where({
-				_id: dbCmd.in(ids)
+			_id: dbCmd.in(ids)
 		}).remove()
 		return result
+	},
+	async getPage(param) {
+		let pageCurrent = param.pageCurrent
+		if (!(pageCurrent && pageCurrent > 0)) {
+			pageCurrent = 1
+		}
+		let pageSize = param.pageSize
+		if (!(pageSize && pageSize > 0)) {
+			pageSize = 20
+		}
+		const skip = (pageCurrent - 1) * pageSize
+
+		let where = param.where
+		if (!(where && Object.keys(where).length)) {
+			where = {}
+		}
+
+		let orderBy = param.orderBy
+		if (!(orderBy && orderBy.length)) {
+			orderBy = ''
+		}
+		const result = await dbJQL.collection(dbCollectionName)
+		.where(where)
+		.skip(skip)
+		.limit(pageSize)
+		.orderBy(orderBy)
+		.get({
+			getCount:true
+		})
+		return {
+			data: result.data,
+			count: result.count,
+			pageCurrent: pageCurrent,
+			pageSize: pageSize
+		}
 	}
 }

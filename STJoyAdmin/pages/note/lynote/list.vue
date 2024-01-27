@@ -2,10 +2,6 @@
 	<view>
 		<view class="uni-header">
 			<view class="uni-group">
-				<view class="uni-title"></view>
-				<view class="uni-sub-title"></view>
-			</view>
-			<view class="uni-group">
 				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
 				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="onAdd">新增</button>
@@ -18,17 +14,17 @@
 			</view>
 		</view>
 		<view class="uni-container">
-			<unicloud-db ref="udb" :collection="collectionList" field="create_time,update_time,user_id,title,content"
+		<!-- 	<unicloud-db ref="udb" :collection="collectionList" field="create_time,update_time,user_id,title,content"
 				:where="where" page-data="replace" :orderby="orderby" :getcount="true" :page-size="options.pageSize"
 				:page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error,options}" :options="options"
-				loadtime="manual" @load="onqueryload">
+				loadtime="manual" @load="onqueryload"> -->
 				<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection" @selection-change="onSelectionChange">
 					<uni-tr>
 						<uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_time')" sortable
 							@sort-change="sortChange($event, 'create_time')">create_time</uni-th>
 						<uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'update_time')" sortable
 							@sort-change="sortChange($event, 'update_time')">update_time</uni-th>
-						<uni-th align="center" sortable @sort-change="sortChange($event, 'user_id')">user_id</uni-th>
+						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'user_id')" sortable @sort-change="sortChange($event, 'user_id')">user_id</uni-th>
 						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'title')" sortable
 							@sort-change="sortChange($event, 'title')">标题</uni-th>
 						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'content')" sortable
@@ -54,13 +50,13 @@
 					</uni-tr>
 				</uni-table>
 				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="pagination.size" v-model="pagination.current" :total="pagination.count"
+					<uni-pagination show-icon :page-size="options.pageSize" v-model="options.pageCurrent" :total="count"
 						@change="onPageChanged" />
 				</view>
-			</unicloud-db>
+			<!-- </unicloud-db> -->
 		</view>
 	</view>
-	<NotePopup ref="notePopup" @finish="loadData"></NotePopup>
+	<NotePopup ref="notePopup" @finish="onLoad"></NotePopup>
 </template>
 
 <script>
@@ -86,6 +82,9 @@
 		},
 		data() {
 			return {
+				loading: false,
+				data: [],
+				count: 0,
 				collectionList: "ly-note",
 				query: '',
 				where: '',
@@ -120,7 +119,8 @@
 			this._filter = {}
 		},
 		onReady() {
-			this.$refs.udb.loadData()
+			// this.$refs.udb.onLoad()
+			this.onLoad()
 		},
 		methods: {
 			onAdd() {
@@ -145,7 +145,7 @@
 				const that = this
 				uniCloud.importObject("ylnote").remove(id).then((res) => {
 					that.$refs.table.clearSelection()
-					that.loadData()
+					that.onLoad()
 				})
 			},
 			onSelectionChange(e) {
@@ -169,7 +169,25 @@
 				const that = this
 				uniCloud.importObject("ylnote").removeBatch(ids).then((res) => {
 					that.$refs.table.clearSelection()
-					that.loadData()
+					that.onLoad()
+				})
+			},
+			onLoad() {
+				this.loading = true
+				const param = {
+					pageCurrent: this.options.pageCurrent,
+					pageSize: this.options.pageSize,
+					where: this.where,
+					orderBy: this.orderby
+				}
+				uniCloud.importObject("ylnote").getPage(param).then(res => {
+					const {data, count, pageCurrent, pageSize} = res
+					this.data = data
+					this.count = count
+					this.options.pageCurrent = pageCurrent
+					this.options.pageSize = pageSize
+				}).finally(() => {
+					this.loading = false
 				})
 			},
 			onqueryload(data) {
@@ -187,18 +205,13 @@
 				const newWhere = this.getWhere()
 				this.where = newWhere
 				this.$nextTick(() => {
-					this.loadData()
-				})
-			},
-			loadData(clear = true) {
-				this.$refs.udb.loadData({
-					clear
+					this.onLoad()
 				})
 			},
 			onPageChanged(e) {
 				this.selectedIndexs.length = 0
 				this.$refs.table.clearSelection()
-				this.$refs.udb.loadData({
+				this.$refs.udb.onLoad({
 					current: e.current
 				})
 			},
@@ -208,7 +221,7 @@
 					url,
 					events: {
 						refreshData: () => {
-							this.loadData(clear)
+							this.onLoad(clear)
 						}
 					}
 				})
@@ -223,7 +236,7 @@
 				}
 				this.$refs.table.clearSelection()
 				this.$nextTick(() => {
-					this.$refs.udb.loadData()
+					this.$refs.udb.onLoad()
 				})
 			},
 			filterChange(e, name) {
@@ -238,7 +251,7 @@
 					this.where = ''
 				}
 				this.$nextTick(() => {
-					this.$refs.udb.loadData()
+					this.$refs.udb.onLoad()
 				})
 			}
 		}
