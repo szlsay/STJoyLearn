@@ -61,5 +61,13 @@ module.exports = {
 		const result = await db.collection(dbCollectionName).doc(_id).remove()
 		return result
 	},
-	
+	async removeBatch(ids) {
+		if (this.userInfo.errCode) {
+			return this.userInfo
+		}
+		const result = await db.collection(dbCollectionName).where({
+				_id: dbCmd.in(ids)
+		}).remove()
+		return result
+	}
 }
