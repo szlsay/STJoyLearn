@@ -41,7 +41,7 @@
             <uni-td align="center">
               <view class="uni-group">
                 <button @click="onEdit(item)" class="uni-button" size="mini" type="primary">修改</button>
-                <button @click="confirmDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
+                <button @click="onDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
               </view>
             </uni-td>
           </uni-tr>
@@ -118,6 +118,25 @@
 			onEdit(row) {
 				this.$refs.notePopup.edit(row)
 			},
+			onDelete(id) {
+				const that = this
+				uni.showModal({
+					title: "提示",
+					content: '确定要删除该数据吗？',
+					success: function(res) {
+						if (res.confirm) {
+							that.handlerDelete(id)
+						}
+					}
+				});
+			},
+			handlerDelete(id) {
+				const that = this
+				uniCloud.importObject("ylnote").remove(id).then((res) => {
+					that.$refs.table.clearSelection()
+					that.loadData()
+				})
+			},
       onqueryload(data) {
         this.exportExcelData = data
       },
@@ -175,13 +194,6 @@
       // 多选
       selectionChange(e) {
         this.selectedIndexs = e.detail.index
-      },
-      confirmDelete(id) {
-        this.$refs.udb.remove(id, {
-          success:(res) => {
-            this.$refs.table.clearSelection()
-          }
-        })
       },
       sortChange(e, name) {
         this.orderByFieldName = name;
