@@ -13,6 +13,7 @@
 				</download-excel>
 			</view>
 		</view>
+		{{where}}
 		<view class="uni-container">
 		<!-- 	<unicloud-db ref="udb" :collection="collectionList" field="create_time,update_time,user_id,title,content"
 				:where="where" page-data="replace" :orderby="orderby" :getcount="true" :page-size="options.pageSize"
@@ -71,10 +72,7 @@
 	const pageSize = 20
 	const pageCurrent = 1
 
-	const orderByMapping = {
-		"ascending": "asc",
-		"descending": "desc"
-	}
+
 
 	export default {
 		components: {
@@ -177,10 +175,12 @@
 				const param = {
 					pageCurrent: this.options.pageCurrent,
 					pageSize: this.options.pageSize,
-					where: this.where,
+					filter: this._filter,
 					orderBy: this.orderby
 				}
+				console.log(0, param)
 				uniCloud.importObject("ylnote").getPage(param).then(res => {
+					console.log(1, res)
 					const {data, count, pageCurrent, pageSize} = res
 					this.data = data
 					this.count = count
@@ -204,30 +204,21 @@
 			search() {
 				const newWhere = this.getWhere()
 				this.where = newWhere
-				this.$nextTick(() => {
-					this.onLoad()
-				})
+				this.onLoad()
 			},
 			onPageChanged(e) {
 				this.selectedIndexs.length = 0
 				this.$refs.table.clearSelection()
-				this.$refs.udb.onLoad({
-					current: e.current
-				})
+				this.onLoad()
+				// this.$refs.udb.onLoad({
+				// 	current: e.current
+				// })
 			},
-			navigateTo(url, clear) {
-				// clear 表示刷新列表时是否清除页码，true 表示刷新并回到列表第 1 页，默认为 true
-				uni.navigateTo({
-					url,
-					events: {
-						refreshData: () => {
-							this.onLoad(clear)
-						}
-					}
-				})
-			},
-
 			sortChange(e, name) {
+				const orderByMapping = {
+					"ascending": "asc",
+					"descending": "desc"
+				}
 				this.orderByFieldName = name;
 				if (e.order) {
 					this.orderby = name + ' ' + orderByMapping[e.order]
@@ -235,24 +226,14 @@
 					this.orderby = ''
 				}
 				this.$refs.table.clearSelection()
-				this.$nextTick(() => {
-					this.$refs.udb.onLoad()
-				})
+				this.onLoad()
 			},
 			filterChange(e, name) {
 				this._filter[name] = {
 					type: e.filterType,
 					value: e.filter
 				}
-				let newWhere = filterToWhere(this._filter, db.command)
-				if (Object.keys(newWhere).length) {
-					this.where = newWhere
-				} else {
-					this.where = ''
-				}
-				this.$nextTick(() => {
-					this.$refs.udb.onLoad()
-				})
+				this.onLoad()
 			}
 		}
 	}
