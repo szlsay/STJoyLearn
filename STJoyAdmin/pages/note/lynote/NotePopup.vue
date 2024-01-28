@@ -66,30 +66,12 @@
 						"title": row.title,
 						"content": row.content
 					}
-					// this.getDetail()
 				} else {
 					this.formDataId = null
 				}
 			},
 			close() {
 				this.$refs.popup.close()
-			},
-			getDetail() {
-				uni.showLoading({
-					mask: true
-				})
-				uniCloud.importObject("ylnote").get(this.formDataId).then((data) => {
-					if (data) {
-						this.formData = data
-					}
-				}).catch((err) => {
-					uni.showModal({
-						content: err.message || '请求服务失败',
-						showCancel: false
-					})
-				}).finally(() => {
-					uni.hideLoading()
-				})
 			},
 			submit() {
 				uni.showLoading({

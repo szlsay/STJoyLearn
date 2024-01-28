@@ -5,7 +5,7 @@
 				<button class="uni-button" type="default" size="mini" @click="onAdd">新增</button>
 				<button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length"
 					@click="onDeleteBatch">批量删除</button>
-				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData"
+				<download-excel ref="downloadExcel" class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData"
 					:type="exportExcel.type" :name="exportExcel.filename">
 					<button class="uni-button" type="primary" size="mini" @click="onExport">导出 Excel</button>
 				</download-excel>
@@ -185,6 +185,10 @@
 						data
 					} = res
 					this.exportExcelData = data
+					const that = this
+					this.$nextTick(() => {
+						that.$refs.downloadExcel.generate()
+					})
 				})
 			},
 			onSortChange(e, name) {
