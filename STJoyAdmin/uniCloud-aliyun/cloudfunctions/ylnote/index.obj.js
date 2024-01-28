@@ -51,7 +51,9 @@ module.exports = {
 		if (this.userInfo.errCode) {
 			return this.userInfo
 		}
-		return db.collection(dbCollectionName).get()
+		return dbJQL.collection(dbCollectionName).field(
+			'timestampToDate(create_time) as createTime,timestampToDate(update_time) as updateTime,user_id,title,content'
+		).get()
 	},
 	async update(_id, value) {
 		if (this.userInfo.errCode) {

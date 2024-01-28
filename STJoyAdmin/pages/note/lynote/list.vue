@@ -113,8 +113,8 @@
 					"filename": "日记列表.xls",
 					"type": "xls",
 					"fields": {
-						"创建时间": "create_time",
-						"更新时间": "update_time",
+						"创建时间": "createTime",
+						"更新时间": "updateTime",
 						"用户标识": "user_id",
 						"标题": "title",
 						"文章内容": "content"
