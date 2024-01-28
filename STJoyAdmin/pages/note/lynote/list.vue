@@ -2,8 +2,6 @@
 	<view>
 		<view class="uni-header">
 			<view class="uni-group">
-				<input class="uni-search" type="text" v-model="query" @confirm="search" placeholder="请输入搜索内容" />
-				<button class="uni-button" type="default" size="mini" @click="search">搜索</button>
 				<button class="uni-button" type="default" size="mini" @click="onAdd">新增</button>
 				<button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length"
 					@click="onDeleteBatch">批量删除</button>
@@ -18,15 +16,15 @@
 				@selection-change="onSelectionChange">
 				<uni-tr>
 					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'create_time')" sortable
-						@sort-change="sortChange($event, 'create_time')">create_time</uni-th>
+						@sort-change="onSortChange($event, 'create_time')">create_time</uni-th>
 					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'update_time')" sortable
-						@sort-change="sortChange($event, 'update_time')">update_time</uni-th>
+						@sort-change="onSortChange($event, 'update_time')">update_time</uni-th>
 					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'user_id')" sortable
-						@sort-change="sortChange($event, 'user_id')">user_id</uni-th>
+						@sort-change="onSortChange($event, 'user_id')">user_id</uni-th>
 					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'title')" sortable
-						@sort-change="sortChange($event, 'title')">标题</uni-th>
+						@sort-change="onSortChange($event, 'title')">标题</uni-th>
 					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'content')" sortable
-						@sort-change="sortChange($event, 'content')">文章内容</uni-th>
+						@sort-change="onSortChange($event, 'content')">文章内容</uni-th>
 					<uni-th align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item,index) in data" :key="index">
@@ -48,7 +46,7 @@
 				</uni-tr>
 			</uni-table>
 			<view class="uni-pagination-box">
-				<uni-pagination show-icon :page-size="options.pageSize" v-model="options.pageCurrent" :total="count"
+				<uni-pagination show-icon :page-size="param.pageSize" v-model="param.pageCurrent" :total="count"
 					@change="onLoad" />
 			</view>
 		</view>
@@ -58,19 +56,9 @@
 
 <script>
 	import {
-		enumConverter,
-		filterToWhere
-	} from '@/js_sdk/validator/ly-note.js';
-	import {
 		getPage
 	} from '@/js_sdk/tool/index.js'
 	import NotePopup from './NotePopup.vue'
-	const db = uniCloud.database()
-	const dbOrderBy = ''
-	const dbSearchFields = []
-	const pageSize = 3
-	const pageCurrent = 1
-
 	export default {
 		components: {
 			NotePopup
@@ -80,17 +68,13 @@
 				loading: false,
 				data: [],
 				count: 0,
-				collectionList: "ly-note",
-				query: '',
 				where: '',
-				orderby: dbOrderBy,
-				orderByFieldName: "",
 				selectedIndexs: [],
-				options: {
-					pageSize,
-					pageCurrent,
-					filterData: {},
-					...enumConverter
+				param: {
+					pageSize: 3,
+					pageCurrent: 1,
+					filter: {},
+					orderby: 'create_time desc',
 				},
 				exportExcel: {
 					"filename": "ly-note.xls",
@@ -105,9 +89,6 @@
 				},
 				exportExcelData: []
 			}
-		},
-		onLoad() {
-			this._filter = {}
 		},
 		onReady() {
 			this.onLoad()
@@ -167,10 +148,10 @@
 				this.$refs.table.clearSelection()
 				this.loading = true
 				const param = {
-					pageCurrent: this.options.pageCurrent,
-					pageSize: this.options.pageSize,
-					filter: this._filter,
-					orderBy: this.orderby
+					pageCurrent: this.param.pageCurrent,
+					pageSize: this.param.pageSize,
+					filter: this.param.filter,
+					orderBy: this.param.orderby
 				}
 				getPage({
 					cn: 'ly-note',
@@ -184,51 +165,35 @@
 					} = res
 					this.data = data
 					this.count = count
-					this.options.pageCurrent = pageCurrent
-					this.options.pageSize = pageSize
+					this.param.pageCurrent = pageCurrent
+					this.param.pageSize = pageSize
 				}).finally(() => {
 					this.loading = false
 				})
 			},
 			onFilterChange(e, name) {
-				this._filter[name] = {
+				this.param.filter[name] = {
 					type: e.filterType,
 					value: e.filter
 				}
-				console.log('000', this._filter)
-				this.options.pageCurrent = 1
+				this.param.pageCurrent = 1
 				this.onLoad()
 			},
 			onqueryload(data) {
 				this.exportExcelData = data
 			},
-			getWhere() {
-				const query = this.query.trim()
-				if (!query) {
-					return ''
-				}
-				const queryRe = new RegExp(query, 'i')
-				return dbSearchFields.map(name => queryRe + '.test(' + name + ')').join(' || ')
-			},
-			search() {
-				const newWhere = this.getWhere()
-				this.where = newWhere
-				this.onLoad()
-			},
-			sortChange(e, name) {
-				const orderByMapping = {
-					"ascending": "asc",
-					"descending": "desc"
-				}
-				this.orderByFieldName = name;
+			onSortChange(e, name) {
 				if (e.order) {
-					this.orderby = name + ' ' + orderByMapping[e.order]
+					const orderByMapping = {
+						"ascending": "asc",
+						"descending": "desc"
+					}
+					this.param.orderby = name + ' ' + orderByMapping[e.order]
 				} else {
-					this.orderby = ''
+					this.param.orderby = ''
 				}
-				this.$refs.table.clearSelection()
 				this.onLoad()
-			},
+			}
 		}
 	}
 </script>

@@ -70,5 +70,5 @@ module.exports = {
 			_id: dbCmd.in(ids)
 		}).remove()
 		return result
-	},
+	}
 }
