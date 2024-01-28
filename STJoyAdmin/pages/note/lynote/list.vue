@@ -21,7 +21,7 @@
 						:key="index">{{th.title}}</uni-th>
 					<uni-th align="center">操作</uni-th>
 				</uni-tr>
-				<uni-tr v-for="(item,index) in data" :key="index">
+				<uni-tr v-for="(item,index) in result.data" :key="index">
 					<uni-td align="center" v-for="(td, index) in table" :key="index">
 						<view v-if="td.type ==='date'">
 							<uni-dateformat :threshold="[0, 0]" :date="item[td.prop]"></uni-dateformat>
@@ -42,7 +42,7 @@
 				</uni-tr>
 			</uni-table>
 			<view class="uni-pagination-box">
-				<uni-pagination show-icon :page-size="param.pageSize" v-model="param.pageCurrent" :total="count"
+				<uni-pagination show-icon :page-size="param.pageSize" v-model="param.pageCurrent" :total="result.count"
 					@change="onLoad" />
 			</view>
 		</view>
@@ -104,8 +104,10 @@
 					}
 				],
 				loading: false,
-				data: [],
-				count: 0,
+				result: {
+					data: [],
+					count: 0,
+				},
 				where: '',
 				selectedIndexs: [],
 				param: {
@@ -201,8 +203,8 @@
 						pageCurrent,
 						pageSize
 					} = res
-					this.data = data
-					this.count = count
+					this.result.data = data
+					this.result.count = count
 					this.param.pageCurrent = pageCurrent
 					this.param.pageSize = pageSize
 				}).finally(() => {
