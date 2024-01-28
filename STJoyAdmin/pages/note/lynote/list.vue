@@ -13,22 +13,17 @@
 				</download-excel>
 			</view>
 		</view>
-		{{where}}
 		<view class="uni-container">
-		<!-- 	<unicloud-db ref="udb" :collection="collectionList" field="create_time,update_time,user_id,title,content"
-				:where="where" page-data="replace" :orderby="orderby" :getcount="true" :page-size="options.pageSize"
-				:page-current="options.pageCurrent" v-slot:default="{data,pagination,loading,error,options}" :options="options"
-				loadtime="manual" @load="onqueryload"> -->
 				<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection" @selection-change="onSelectionChange">
 					<uni-tr>
-						<uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'create_time')" sortable
+						<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'create_time')" sortable
 							@sort-change="sortChange($event, 'create_time')">create_time</uni-th>
-						<uni-th align="center" filter-type="timestamp" @filter-change="filterChange($event, 'update_time')" sortable
+						<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'update_time')" sortable
 							@sort-change="sortChange($event, 'update_time')">update_time</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'user_id')" sortable @sort-change="sortChange($event, 'user_id')">user_id</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'title')" sortable
+						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'user_id')" sortable @sort-change="sortChange($event, 'user_id')">user_id</uni-th>
+						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'title')" sortable
 							@sort-change="sortChange($event, 'title')">标题</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="filterChange($event, 'content')" sortable
+						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'content')" sortable
 							@sort-change="sortChange($event, 'content')">文章内容</uni-th>
 						<uni-th align="center">操作</uni-th>
 					</uni-tr>
@@ -52,9 +47,8 @@
 				</uni-table>
 				<view class="uni-pagination-box">
 					<uni-pagination show-icon :page-size="options.pageSize" v-model="options.pageCurrent" :total="count"
-						@change="onPageChanged" />
+						@change="onLoad" />
 				</view>
-			<!-- </unicloud-db> -->
 		</view>
 	</view>
 	<NotePopup ref="notePopup" @finish="onLoad"></NotePopup>
@@ -69,10 +63,8 @@
 	const db = uniCloud.database()
 	const dbOrderBy = ''
 	const dbSearchFields = []
-	const pageSize = 20
+	const pageSize = 3
 	const pageCurrent = 1
-
-
 
 	export default {
 		components: {
@@ -117,7 +109,6 @@
 			this._filter = {}
 		},
 		onReady() {
-			// this.$refs.udb.onLoad()
 			this.onLoad()
 		},
 		methods: {
@@ -162,7 +153,7 @@
 				});
 			},
 			handlerDeleteBatch() {
-				const dataList = this.$refs.udb.dataList
+				const dataList = this.data
 				const ids = this.selectedIndexs.map(i => dataList[i]._id)
 				const that = this
 				uniCloud.importObject("ylnote").removeBatch(ids).then((res) => {
@@ -171,6 +162,8 @@
 				})
 			},
 			onLoad() {
+				this.selectedIndexs.length = 0
+				this.$refs.table.clearSelection()
 				this.loading = true
 				const param = {
 					pageCurrent: this.options.pageCurrent,
@@ -178,9 +171,7 @@
 					filter: this._filter,
 					orderBy: this.orderby
 				}
-				console.log(0, param)
 				uniCloud.importObject("ylnote").getPage(param).then(res => {
-					console.log(1, res)
 					const {data, count, pageCurrent, pageSize} = res
 					this.data = data
 					this.count = count
@@ -189,6 +180,14 @@
 				}).finally(() => {
 					this.loading = false
 				})
+			},
+			onFilterChange(e, name) {
+				this._filter[name] = {
+					type: e.filterType,
+					value: e.filter
+				}
+				this.options.pageCurrent = 1
+				this.onLoad()
 			},
 			onqueryload(data) {
 				this.exportExcelData = data
@@ -206,14 +205,6 @@
 				this.where = newWhere
 				this.onLoad()
 			},
-			onPageChanged(e) {
-				this.selectedIndexs.length = 0
-				this.$refs.table.clearSelection()
-				this.onLoad()
-				// this.$refs.udb.onLoad({
-				// 	current: e.current
-				// })
-			},
 			sortChange(e, name) {
 				const orderByMapping = {
 					"ascending": "asc",
@@ -228,13 +219,6 @@
 				this.$refs.table.clearSelection()
 				this.onLoad()
 			},
-			filterChange(e, name) {
-				this._filter[name] = {
-					type: e.filterType,
-					value: e.filter
-				}
-				this.onLoad()
-			}
 		}
 	}
 </script>
