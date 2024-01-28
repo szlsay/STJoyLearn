@@ -14,41 +14,43 @@
 			</view>
 		</view>
 		<view class="uni-container">
-				<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection" @selection-change="onSelectionChange">
-					<uni-tr>
-						<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'create_time')" sortable
-							@sort-change="sortChange($event, 'create_time')">create_time</uni-th>
-						<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'update_time')" sortable
-							@sort-change="sortChange($event, 'update_time')">update_time</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'user_id')" sortable @sort-change="sortChange($event, 'user_id')">user_id</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'title')" sortable
-							@sort-change="sortChange($event, 'title')">标题</uni-th>
-						<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'content')" sortable
-							@sort-change="sortChange($event, 'content')">文章内容</uni-th>
-						<uni-th align="center">操作</uni-th>
-					</uni-tr>
-					<uni-tr v-for="(item,index) in data" :key="index">
-						<uni-td align="center">
-							<uni-dateformat :threshold="[0, 0]" :date="item.create_time"></uni-dateformat>
-						</uni-td>
-						<uni-td align="center">
-							<uni-dateformat :threshold="[0, 0]" :date="item.update_time"></uni-dateformat>
-						</uni-td>
-						<uni-td align="center">{{item.user_id}}</uni-td>
-						<uni-td align="center">{{item.title}}</uni-td>
-						<uni-td align="center">{{item.content}}</uni-td>
-						<uni-td align="center">
-							<view class="uni-group">
-								<button @click="onEdit(item)" class="uni-button" size="mini" type="primary">修改</button>
-								<button @click="onDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
-							</view>
-						</uni-td>
-					</uni-tr>
-				</uni-table>
-				<view class="uni-pagination-box">
-					<uni-pagination show-icon :page-size="options.pageSize" v-model="options.pageCurrent" :total="count"
-						@change="onLoad" />
-				</view>
+			<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection"
+				@selection-change="onSelectionChange">
+				<uni-tr>
+					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'create_time')" sortable
+						@sort-change="sortChange($event, 'create_time')">create_time</uni-th>
+					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'update_time')" sortable
+						@sort-change="sortChange($event, 'update_time')">update_time</uni-th>
+					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'user_id')" sortable
+						@sort-change="sortChange($event, 'user_id')">user_id</uni-th>
+					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'title')" sortable
+						@sort-change="sortChange($event, 'title')">标题</uni-th>
+					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'content')" sortable
+						@sort-change="sortChange($event, 'content')">文章内容</uni-th>
+					<uni-th align="center">操作</uni-th>
+				</uni-tr>
+				<uni-tr v-for="(item,index) in data" :key="index">
+					<uni-td align="center">
+						<uni-dateformat :threshold="[0, 0]" :date="item.create_time"></uni-dateformat>
+					</uni-td>
+					<uni-td align="center">
+						<uni-dateformat :threshold="[0, 0]" :date="item.update_time"></uni-dateformat>
+					</uni-td>
+					<uni-td align="center">{{item.user_id}}</uni-td>
+					<uni-td align="center">{{item.title}}</uni-td>
+					<uni-td align="center">{{item.content}}</uni-td>
+					<uni-td align="center">
+						<view class="uni-group">
+							<button @click="onEdit(item)" class="uni-button" size="mini" type="primary">修改</button>
+							<button @click="onDelete(item._id)" class="uni-button" size="mini" type="warn">删除</button>
+						</view>
+					</uni-td>
+				</uni-tr>
+			</uni-table>
+			<view class="uni-pagination-box">
+				<uni-pagination show-icon :page-size="options.pageSize" v-model="options.pageCurrent" :total="count"
+					@change="onLoad" />
+			</view>
 		</view>
 	</view>
 	<NotePopup ref="notePopup" @finish="onLoad"></NotePopup>
@@ -59,6 +61,9 @@
 		enumConverter,
 		filterToWhere
 	} from '@/js_sdk/validator/ly-note.js';
+	import {
+		getPage
+	} from '@/js_sdk/tool/index.js'
 	import NotePopup from './NotePopup.vue'
 	const db = uniCloud.database()
 	const dbOrderBy = ''
@@ -86,10 +91,6 @@
 					pageCurrent,
 					filterData: {},
 					...enumConverter
-				},
-				imageStyles: {
-					width: 64,
-					height: 64
 				},
 				exportExcel: {
 					"filename": "ly-note.xls",
@@ -171,8 +172,16 @@
 					filter: this._filter,
 					orderBy: this.orderby
 				}
-				uniCloud.importObject("ylnote").getPage(param).then(res => {
-					const {data, count, pageCurrent, pageSize} = res
+				getPage({
+					cn: 'ly-note',
+					param
+				}).then(res => {
+					const {
+						data,
+						count,
+						pageCurrent,
+						pageSize
+					} = res
 					this.data = data
 					this.count = count
 					this.options.pageCurrent = pageCurrent
@@ -186,6 +195,7 @@
 					type: e.filterType,
 					value: e.filter
 				}
+				console.log('000', this._filter)
 				this.options.pageCurrent = 1
 				this.onLoad()
 			},

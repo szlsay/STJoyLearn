@@ -10,12 +10,43 @@
 
 // 下面示例查询uni-id-users表的所有数据
 db.collection('uni-id-users').get();
-db.collection("ly-note").where({
-	title: '1'
-}).get();
 
 db.collection("ly-note").where("/1/.test(title)").get();
-
 db.collection("ly-note").where({
 	title: /1/
 }).get();
+
+const dbCmd = db.command
+db.collection("ly-note").where({
+	"create_time": dbCmd.gte(1705459902000).and(dbCmd.lte(1706669502000))
+}).get();
+
+db.collection("ly-note").where({
+		"create_time": dbCmd.gte(1705459902000).and(dbCmd.lte(1706669502000))
+	}).skip(0)
+	.limit(3).get();
+
+db.collection("ly-note").where({
+		"create_time": dbCmd.and([dbCmd.gte(1705459902000), dbCmd.lte(1706669502000)])
+	}).skip(0)
+	.limit(3).get({
+		getCount: true
+	});
+
+db.collection("ly-note").where({
+		"create_time": dbCmd.and([dbCmd.gte(1705459902000), dbCmd.lte(1706669502000)])
+	})
+	.orderBy('create_time asc')
+	.skip(0)
+	.limit(3).get({
+		getCount: true
+	});
+	
+db.collection("ly-note").where({
+		"create_time": dbCmd.and([dbCmd.gte(1705459902000), dbCmd.lte(1706669502000)])
+	})
+	.orderBy('create_time desc')
+	.skip(0)
+	.limit(3).get({
+		getCount: true
+	});
