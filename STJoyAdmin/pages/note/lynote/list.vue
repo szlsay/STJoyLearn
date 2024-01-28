@@ -3,15 +3,15 @@
 		<view class="uni-header">
 			<view class="uni-group">
 				<button class="uni-button" type="default" size="mini" @click="onAdd">新增</button>
-				<button class="uni-button" type="default" size="mini" :disabled="!selectedIndexs.length"
+				<button class="uni-button" type="warn" size="mini" :disabled="!selectedIndexs.length"
 					@click="onDeleteBatch">批量删除</button>
+				<button class="uni-button" type="default" size="mini" @click="onReset">重置</button>
 				<download-excel ref="downloadExcel" class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData"
 					:type="exportExcel.type" :name="exportExcel.filename">
 					<button class="uni-button" type="primary" size="mini" @click="onExport">导出 Excel</button>
 				</download-excel>
 			</view>
 		</view>
-		{{param}}
 		<view class="uni-container">
 			<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection"
 				@selection-change="onSelectionChange">
@@ -47,7 +47,7 @@
 			</view>
 		</view>
 	</view>
-	<NotePopup ref="notePopup" @finish="onLoad"></NotePopup>
+	<Modal ref="modal" @finish="onLoad"></Modal>
 </template>
 
 <script>
@@ -55,10 +55,11 @@
 		getPage,
 		exportData
 	} from '@/js_sdk/tool/index.js'
-	import NotePopup from './NotePopup.vue'
+	import Modal from './Modal.vue'
+	const cn = "ly-note"
 	export default {
 		components: {
-			NotePopup
+			Modal
 		},
 		data() {
 			return {
@@ -108,10 +109,9 @@
 					data: [],
 					count: 0,
 				},
-				where: '',
 				selectedIndexs: [],
 				param: {
-					pageSize: 3,
+					pageSize: 20,
 					pageCurrent: 1,
 					filter: {},
 					orderby: 'create_time desc',
@@ -134,11 +134,20 @@
 			this.onLoad()
 		},
 		methods: {
+			onReset() {
+				this.param = {
+					pageSize: 20,
+					pageCurrent: 1,
+					filter: {},
+					orderby: 'create_time desc',
+				}
+				this.onLoad()
+			},
 			onAdd() {
-				this.$refs.notePopup.add()
+				this.$refs.modal.add()
 			},
 			onEdit(row) {
-				this.$refs.notePopup.edit(row)
+				this.$refs.modal.edit(row)
 			},
 			onDelete(id) {
 				const that = this
@@ -154,7 +163,7 @@
 			},
 			handlerDelete(id) {
 				const that = this
-				uniCloud.importObject("ylnote").remove(id).then((res) => {
+				uniCloud.importObject(cn).remove(id).then((res) => {
 					that.$refs.table.clearSelection()
 					that.onLoad()
 				})
@@ -175,10 +184,10 @@
 				});
 			},
 			handlerDeleteBatch() {
-				const dataList = this.data
+				const dataList = this.result.data
 				const ids = this.selectedIndexs.map(i => dataList[i]._id)
 				const that = this
-				uniCloud.importObject("ylnote").removeBatch(ids).then((res) => {
+				uniCloud.importObject(cn).removeBatch(ids).then((res) => {
 					that.$refs.table.clearSelection()
 					that.onLoad()
 				})
@@ -194,7 +203,7 @@
 					orderBy: this.param.orderby
 				}
 				getPage({
-					cn: 'ly-note',
+					cn,
 					param
 				}).then(res => {
 					const {
@@ -221,7 +230,7 @@
 			},
 			onExport() {
 				exportData({
-					cn: 'ly-note',
+					cn
 				}).then(res => {
 					const {
 						result

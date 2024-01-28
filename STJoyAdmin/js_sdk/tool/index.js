@@ -110,7 +110,7 @@ export async function getPage({
 	const {
 		result
 	} = await db.collection(listTemp, userTemp).field(
-		'create_time,update_time,title,content, arrayElemAt(user_id.username, 0) as username'
+		'create_time,update_time,title,content,arrayElemAt(user_id.username, 0) as username'
 	).get({
 		getCount: true
 	})
@@ -131,5 +131,5 @@ export async function exportData({
 	const userTemp = await db.collection('uni-id-users').field("_id, username").getTemp()
 	return db.collection(listTemp, userTemp).field(
 		'timestampToDate(create_time) as createTime,timestampToDate(update_time) as updateTime,title,content, arrayElemAt(user_id.username, 0) as username'
-	).get()
+	).orderBy('create_time desc').get()
 }
