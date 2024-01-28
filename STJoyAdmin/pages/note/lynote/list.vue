@@ -15,31 +15,20 @@
 			<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection"
 				@selection-change="onSelectionChange">
 				<uni-tr>
-					<uni-th :align="item.align" :filter-type="item.filterType"
-						@filter-change="onFilterChange($event, item.event)" sortable @sort-change="onSortChange($event, item.event)"
-						v-for="(item, index) in table" :key="index">{{item.title}}</uni-th>
-					<!-- 					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'create_time')" sortable
-						@sort-change="onSortChange($event, 'create_time')">create_time</uni-th>
-					<uni-th align="center" filter-type="timestamp" @filter-change="onFilterChange($event, 'update_time')" sortable
-						@sort-change="onSortChange($event, 'update_time')">update_time</uni-th>
-					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'user_id')" sortable
-						@sort-change="onSortChange($event, 'user_id')">user_id</uni-th>
-					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'title')" sortable
-						@sort-change="onSortChange($event, 'title')">标题</uni-th>
-					<uni-th align="center" filter-type="search" @filter-change="onFilterChange($event, 'content')" sortable
-						@sort-change="onSortChange($event, 'content')">文章内容</uni-th> -->
+					<uni-th :align="th.align" :filter-type="th.filterType" @filter-change="onFilterChange($event, th.event)"
+						sortable @sort-change="onSortChange($event, th.event)" v-for="(th, index) in table"
+						:key="index">{{th.title}}</uni-th>
 					<uni-th align="center">操作</uni-th>
 				</uni-tr>
 				<uni-tr v-for="(item,index) in data" :key="index">
-					<!-- 					<uni-td align="center">
-						<uni-dateformat :threshold="[0, 0]" :date="item.create_time"></uni-dateformat>
+					<uni-td align="center" v-for="(td, index) in table" :key="index">
+						<view v-if="td.type ==='date'">
+							<uni-dateformat :threshold="[0, 0]" :date="item[td.prop]"></uni-dateformat>
+						</view>
+						<view v-if="td.type ==='string'">
+							{{item[td.prop]}}
+						</view>
 					</uni-td>
-					<uni-td align="center">
-						<uni-dateformat :threshold="[0, 0]" :date="item.update_time"></uni-dateformat>
-					</uni-td>
-					<uni-td align="center">{{item.user_id}}</uni-td> -->
-					<uni-td align="center">{{item.title}}</uni-td>
-					<!-- <uni-td align="center">{{item.content}}</uni-td> -->
 					<uni-td align="center">
 						<view class="uni-group">
 							<button @click="onEdit(item)" class="uni-button" size="mini" type="primary">修改</button>
@@ -69,11 +58,46 @@
 		data() {
 			return {
 				table: [{
-					align: 'center',
-					filterType: 'search',
-					title: '标题',
-					event: 'title'
-				}],
+						align: 'center',
+						filterType: 'search',
+						title: '标题',
+						event: 'title',
+						prop: 'title',
+						type: 'string'
+					},
+					{
+						align: 'center',
+						filterType: 'search',
+						title: '文章内容',
+						event: 'content',
+						prop: 'content',
+						type: 'string'
+					},
+					{
+						align: 'center',
+						filterType: 'search',
+						title: '用户标识',
+						event: 'user_id',
+						prop: 'user_id',
+						type: 'string'
+					},
+					{
+						align: 'center',
+						filterType: 'timestamp',
+						title: '创建时间',
+						event: 'create_time',
+						prop: 'create_time',
+						type: 'date'
+					},
+					{
+						align: 'center',
+						filterType: 'timestamp',
+						title: '更新时间',
+						event: 'update_time',
+						prop: 'update_time',
+						type: 'date'
+					}
+				],
 				loading: false,
 				data: [],
 				count: 0,
