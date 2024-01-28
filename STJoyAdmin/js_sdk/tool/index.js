@@ -1,3 +1,7 @@
+const db = uniCloud.database();
+const dbJQL = uniCloud.databaseForJQL()
+const dbCmd = db.command;
+
 function filterToWhere(filter, command) {
 	let where = {}
 	for (let field in filter) {
@@ -8,7 +12,9 @@ function filterToWhere(filter, command) {
 		switch (type) {
 			case "search":
 				if (typeof value === 'string' && value.length) {
-					where[field] = new RegExp(value)
+					if (field === "username") {} else {
+						where[field] = new RegExp(value)
+					}
 				}
 				break;
 			case "select":
@@ -46,9 +52,7 @@ function filterToWhere(filter, command) {
 	return where
 }
 
-const db = uniCloud.database();
-const dbJQL = uniCloud.databaseForJQL()
-const dbCmd = db.command;
+
 
 export async function getPage({
 	cn,
@@ -70,10 +74,31 @@ export async function getPage({
 		where = {}
 	}
 
+	if (Object.keys(param.filter).includes("username")) {
+		let {
+			type,
+			value
+		} = param.filter["username"]
+		if (value) {
+			const {
+				result
+			} = await db.collection('uni-id-users').where({
+				username: new RegExp(value)
+			}).field("_id").get()
+			if (result && result.data && result.data.length > 0) {
+				const userIds = result.data.map(item => item._id)
+				where["user_id"] = dbCmd.in(userIds)
+			} else {
+				where["user_id"] = ""
+			}
+		}
+	}
+
 	let orderBy = param.orderBy
 	if (!(orderBy && orderBy.length)) {
 		orderBy = ''
 	}
+
 	const listTemp = await db.collection(cn)
 		.where(where)
 		.field('create_time,update_time,title,content,user_id')

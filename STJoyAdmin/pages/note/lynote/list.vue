@@ -11,6 +11,7 @@
 				</download-excel>
 			</view>
 		</view>
+		{{param}}
 		<view class="uni-container">
 			<uni-table ref="table" :loading="loading" emptyText="没有更多数据" border stripe type="selection"
 				@selection-change="onSelectionChange">
@@ -224,7 +225,6 @@
 						result
 					} = res
 					this.exportExcelData = result.data
-					console.log(res)
 					const that = this
 					this.$nextTick(() => {
 						that.$refs.downloadExcel.generate()
