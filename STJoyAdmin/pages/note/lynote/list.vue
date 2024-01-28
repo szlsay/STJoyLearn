@@ -7,7 +7,7 @@
 					@click="onDeleteBatch">批量删除</button>
 				<download-excel class="hide-on-phone" :fields="exportExcel.fields" :data="exportExcelData"
 					:type="exportExcel.type" :name="exportExcel.filename">
-					<button class="uni-button" type="primary" size="mini">导出 Excel</button>
+					<button class="uni-button" type="primary" size="mini" @click="onExport">导出 Excel</button>
 				</download-excel>
 			</view>
 		</view>
@@ -80,9 +80,9 @@
 					"filename": "ly-note.xls",
 					"type": "xls",
 					"fields": {
-						"create_time": "create_time",
-						"update_time": "update_time",
-						"user_id": "user_id",
+						"创建时间": "create_time",
+						"更新时间": "update_time",
+						"用户标识": "user_id",
 						"标题": "title",
 						"文章内容": "content"
 					}
@@ -179,8 +179,13 @@
 				this.param.pageCurrent = 1
 				this.onLoad()
 			},
-			onqueryload(data) {
-				this.exportExcelData = data
+			onExport() {
+				uniCloud.importObject("ylnote").export().then(res => {
+					const {
+						data
+					} = res
+					this.exportExcelData = data
+				})
 			},
 			onSortChange(e, name) {
 				if (e.order) {

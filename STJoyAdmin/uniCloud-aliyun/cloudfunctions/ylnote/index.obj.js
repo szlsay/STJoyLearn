@@ -47,6 +47,12 @@ module.exports = {
 			return {}
 		}
 	},
+	export () {
+		if (this.userInfo.errCode) {
+			return this.userInfo
+		}
+		return db.collection(dbCollectionName).get()
+	},
 	async update(_id, value) {
 		if (this.userInfo.errCode) {
 			return this.userInfo
