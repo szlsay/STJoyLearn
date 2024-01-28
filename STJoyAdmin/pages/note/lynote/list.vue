@@ -77,7 +77,7 @@
 					orderby: 'create_time desc',
 				},
 				exportExcel: {
-					"filename": "ly-note.xls",
+					"filename": "日记列表.xls",
 					"type": "xls",
 					"fields": {
 						"创建时间": "create_time",
