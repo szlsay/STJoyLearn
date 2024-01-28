@@ -51,7 +51,8 @@
 
 <script>
 	import {
-		getPage
+		getPage,
+		exportData
 	} from '@/js_sdk/tool/index.js'
 	import NotePopup from './NotePopup.vue'
 	export default {
@@ -82,7 +83,7 @@
 						title: '用户名称',
 						event: 'username',
 						prop: 'username',
-						type: 'array'
+						type: 'string'
 					},
 					{
 						align: 'center',
@@ -118,7 +119,7 @@
 					"fields": {
 						"创建时间": "createTime",
 						"更新时间": "updateTime",
-						"用户标识": "user_id",
+						"用户标识": "username",
 						"标题": "title",
 						"文章内容": "content"
 					}
@@ -216,11 +217,14 @@
 				this.onLoad()
 			},
 			onExport() {
-				uniCloud.importObject("ylnote").export().then(res => {
+				exportData({
+					cn: 'ly-note',
+				}).then(res => {
 					const {
-						data
+						result
 					} = res
-					this.exportExcelData = data
+					this.exportExcelData = result.data
+					console.log(res)
 					const that = this
 					this.$nextTick(() => {
 						that.$refs.downloadExcel.generate()

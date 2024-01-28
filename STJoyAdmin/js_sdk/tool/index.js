@@ -74,18 +74,18 @@ export async function getPage({
 	if (!(orderBy && orderBy.length)) {
 		orderBy = ''
 	}
-	const note = await db.collection(cn)
+	const listTemp = await db.collection(cn)
 		.where(where)
 		.field('create_time,update_time,title,content,user_id')
 		.orderBy(orderBy)
 		.skip(skip)
 		.limit(pageSize)
 		.getTemp()
-	const user = await db.collection('uni-id-users').field("_id, username").getTemp()
+	const userTemp = await db.collection('uni-id-users').field("_id, username").getTemp()
 	const {
 		result
-	} = await db.collection(note, user).field(
-		'create_time,update_time,title,content, user_id.username as username'
+	} = await db.collection(listTemp, userTemp).field(
+		'create_time,update_time,title,content, arrayElemAt(user_id.username, 0) as username'
 	).get({
 		getCount: true
 	})
@@ -95,4 +95,16 @@ export async function getPage({
 		pageCurrent: pageCurrent,
 		pageSize: pageSize
 	}
+}
+
+export async function exportData({
+	cn
+}) {
+	const listTemp = await db.collection(cn)
+		.field('create_time,update_time,title,content,user_id')
+		.getTemp()
+	const userTemp = await db.collection('uni-id-users').field("_id, username").getTemp()
+	return db.collection(listTemp, userTemp).field(
+		'timestampToDate(create_time) as createTime,timestampToDate(update_time) as updateTime,title,content, arrayElemAt(user_id.username, 0) as username'
+	).get()
 }
