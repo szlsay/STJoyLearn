@@ -58,12 +58,12 @@ export async function getPage({
 	if (!(pageCurrent && pageCurrent > 0)) {
 		pageCurrent = 1
 	}
-	
+
 	let pageSize = param.pageSize
 	if (!(pageSize && pageSize > 0)) {
 		pageSize = 20
 	}
-	
+
 	const skip = (pageCurrent - 1) * pageSize
 	let where = filterToWhere(param.filter, dbCmd)
 	if (!(where && Object.keys(where).length)) {
@@ -74,17 +74,21 @@ export async function getPage({
 	if (!(orderBy && orderBy.length)) {
 		orderBy = ''
 	}
-	
-	const {
-		result
-	} = await db.collection(cn)
+	const note = await db.collection(cn)
 		.where(where)
+		.field('create_time,update_time,title,content,user_id')
 		.orderBy(orderBy)
 		.skip(skip)
 		.limit(pageSize)
-		.get({
-			getCount: true
-		})
+		.getTemp()
+	const user = await db.collection('uni-id-users').field("_id, username").getTemp()
+	const {
+		result
+	} = await db.collection(note, user).field(
+		'create_time,update_time,title,content, user_id.username as username'
+	).get({
+		getCount: true
+	})
 	return {
 		data: result.data,
 		count: result.count,

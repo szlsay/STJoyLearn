@@ -28,6 +28,9 @@
 						<view v-if="td.type ==='string'">
 							{{item[td.prop]}}
 						</view>
+						<view v-if="td.type ==='array'">
+							{{item[td.prop].join(',')}}
+						</view>
 					</uni-td>
 					<uni-td align="center">
 						<view class="uni-group">
@@ -76,10 +79,10 @@
 					{
 						align: 'center',
 						filterType: 'search',
-						title: '用户标识',
-						event: 'user_id',
-						prop: 'user_id',
-						type: 'string'
+						title: '用户名称',
+						event: 'username',
+						prop: 'username',
+						type: 'array'
 					},
 					{
 						align: 'center',
