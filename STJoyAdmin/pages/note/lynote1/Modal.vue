@@ -9,6 +9,7 @@
 				<uni-forms-item name="content" label="文章内容">
 					<uni-easyinput placeholder="文章内容" v-model="formData.content" trim="right"></uni-easyinput>
 				</uni-forms-item>
+				<editor #editor></editor>
 				<view class="uni-button-group">
 					<button class="uni-button" style="width: 100px;" @click="close">关闭</button>
 					<button type="primary" class="uni-button" style="width: 100px; margin-left: 15px;" @click="submit">提交</button>
@@ -44,6 +45,11 @@
 					...getValidator(Object.keys(formData))
 				}
 			}
+		},
+		onEditorReady() {
+			uni.createSelectorQuery().select('#editor').context((res) => {
+				this.editorCtx = res.context
+			}).exec()
 		},
 		onReady() {
 			this.$refs.form.setRules(this.rules)
@@ -107,7 +113,7 @@
 		}
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	.popup-box {
 		background-color: #fff;
 		min-width: 500px;
@@ -118,5 +124,9 @@
 			text-align: center;
 			margin-bottom: 20px;
 		}
+	}
+	#editor{
+		width: 200px;
+		height: 300px;
 	}
 </style>
