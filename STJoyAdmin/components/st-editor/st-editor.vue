@@ -1,27 +1,34 @@
 <template>
-	<view class="container">
+	<view class="st-editor">
+		<view class="editor-left">
+			<view class="phone-box">
+				<view class="phone-bar"></view>
+				<view class="phone-content">
+					春节前夕，习近平总书记在天津考察调研，看望慰问基层干部群众。2月1日上午，他首先来到西青区辛口镇第六埠村，实地了解去年洪涝灾害后当地农业生产恢复等情况，看望受灾群众。当天下午，他来到天津古文化街，察看节日市场供应和历史文化街区保护利用等情况。
+				</view>
+			</view>
+		</view>
+		<view class="editor-right">123</view>
+	</view>
+	<!-- 	<view class="container">
 		<view class="page-body">
 			<view class='wrapper'>
 				<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
-					<view :class="formats.bold ? 'ql-active' : ''" class="iconfont icon-zitijiacu" data-name="bold">
-					</view>
-					<view :class="formats.italic ? 'ql-active' : ''" class="iconfont icon-zitixieti" data-name="italic">
-					</view>
-					<view :class="formats.underline ? 'ql-active' : ''" class="iconfont icon-zitixiahuaxian"
-						data-name="underline"></view>
-					<view :class="formats.strike ? 'ql-active' : ''" class="iconfont icon-zitishanchuxian"
-						data-name="strike"></view>
-					<!-- #ifndef MP-BAIDU -->
+					
+					<view :class="formats.bold ? 'ql-active' : ''" class="iconfont icon-zitijiacu" data-name="bold"></view>
+					<view :class="formats.italic ? 'ql-active' : ''" class="iconfont icon-zitixieti" data-name="italic"></view>
+					<view :class="formats.underline ? 'ql-active' : ''" class="iconfont icon-zitixiahuaxian" data-name="underline"></view>
+					<view :class="formats.strike ? 'ql-active' : ''" class="iconfont icon-zitishanchuxian" data-name="strike"></view>
+
 					<view :class="formats.align === 'left' ? 'ql-active' : ''" class="iconfont icon-zuoduiqi"
 						data-name="align" data-value="left"></view>
-					<!-- #endif -->
 					<view :class="formats.align === 'center' ? 'ql-active' : ''" class="iconfont icon-juzhongduiqi"
 						data-name="align" data-value="center"></view>
 					<view :class="formats.align === 'right' ? 'ql-active' : ''" class="iconfont icon-youduiqi"
 						data-name="align" data-value="right"></view>
 					<view :class="formats.align === 'justify' ? 'ql-active' : ''" class="iconfont icon-zuoyouduiqi"
 						data-name="align" data-value="justify"></view>
-					<!-- #ifndef MP-BAIDU -->
+						
 					<view :class="formats.lineHeight ? 'ql-active' : ''" class="iconfont icon-line-height"
 						data-name="lineHeight" data-value="2"></view>
 					<view :class="formats.letterSpacing ? 'ql-active' : ''" class="iconfont icon-Character-Spacing"
@@ -30,21 +37,20 @@
 						data-name="marginTop" data-value="20px"></view>
 					<view :class="formats.marginBottom ? 'ql-active' : ''" class="iconfont icon-723bianjiqi_duanhouju"
 						data-name="marginBottom" data-value="20px"></view>
-					<!-- #endif -->
 
 					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
 
-					<!-- #ifndef MP-BAIDU -->
-					<view :class="formats.fontFamily ? 'ql-active' : ''" class="iconfont icon-font"
-						data-name="fontFamily" data-value="Pacifico"></view>
 					<view :class="formats.fontSize === '24px' ? 'ql-active' : ''" class="iconfont icon-fontsize"
 						data-name="fontSize" data-value="24px"></view>
-					<!-- #endif -->
 					<view :class="formats.color === '#0000ff' ? 'ql-active' : ''" class="iconfont icon-text_color"
 						data-name="color" data-value="#0000ff"></view>
 					<view :class="formats.backgroundColor === '#00ff00' ? 'ql-active' : ''"
 						class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#00ff00"></view>
-					<view class="iconfont icon-date" @tap="insertDate"></view>
+						
+						
+						<view style="color: red;"
+							class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#ff0000"></view>
+						
 					<view class="iconfont icon--checklist" data-name="list" data-value="check"></view>
 					<view :class="formats.list === 'ordered' ? 'ql-active' : ''" class="iconfont icon-youxupailie"
 						data-name="list" data-value="ordered"></view>
@@ -66,9 +72,6 @@
 						data-name="script" data-value="super"></view>
 
 					<view class="iconfont icon-shanchu" @tap="clear"></view>
-
-					<view :class="formats.direction === 'rtl' ? 'ql-active' : ''" class="iconfont icon-direction-rtl"
-						data-name="direction" data-value="rtl"></view>
 				</view>
 
 				<view class="editor-wrapper">
@@ -81,7 +84,7 @@
 				</view>
 			</view>
 		</view>
-	</view>
+	</view> -->
 </template>
 
 <script>
@@ -91,20 +94,6 @@
 				readOnly: false,
 				formats: {}
 			}
-		},
-		onLoad() {
-			// #ifndef MP-BAIDU
-			uni.loadFontFace({
-				family: 'Pacifico',
-				source: 'url("/static/font/Pacifico-Regular.ttf")',
-				success() {
-					console.log('success load font')
-				},
-				fail() {
-					console.log('fail load font load')
-				}
-			})
-			// #endif
 		},
 		methods: {
 			readOnlyChange() {
@@ -121,15 +110,9 @@
 				})
 			},
 			onEditorReady() {
-				// #ifdef MP-BAIDU
-				this.editorCtx = requireDynamicLib('editorLib').createEditorContext('editor');
-				// #endif
-
-				// #ifdef APP-PLUS || MP-WEIXIN || H5
 				uni.createSelectorQuery().select('#editor').context((res) => {
 					this.editorCtx = res.context
 				}).exec()
-				// #endif
 			},
 			undo() {
 				this.editorCtx.undo()
@@ -200,8 +183,38 @@
 	}
 </script>
 
-<style>
+<style lang="scss" scoped>
 	@import "./editor-icon.css";
+
+	.st-editor {
+		background-color: red;
+		display: flex;
+
+		.editor-left {
+			width: 454px;
+			height: 936px;
+			background-color: green;
+
+			.phone-box {
+				background-color: #fff;
+				border-radius: 50px;
+				width: 414px;
+				height: 896px;
+				border: 20px solid #1D1D1D;
+				
+				.phone-bar{
+					background-color: #1D1D1D;
+					width: 224px;
+					height: 32px;
+					border-bottom-left-radius: 32px;
+					border-bottom-right-radius: 32px;
+					margin: 0 auto;
+				}
+			}
+		}
+	}
+
+
 
 	.page-body {
 		height: calc(100vh - var(--window-top) - var(--status-bar-height));
