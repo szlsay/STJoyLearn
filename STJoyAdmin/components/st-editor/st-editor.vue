@@ -2,75 +2,16 @@
 	<view class="st-editor">
 		<view class="editor-left">
 			<st-phone>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
-				<view>支持的视频格式</view>
+				<view></view>
 			</st-phone>
 		</view>
-		<view class="editor-right">123</view>
+		<view class="editor-right">
+			<view class="box">
+				
+			</view>
+		</view>
 	</view>
-	<!-- 	<view class="container">
+		<view class="container">
 		<view class="page-body">
 			<view class='wrapper'>
 				<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
@@ -144,7 +85,7 @@
 				</view>
 			</view>
 		</view>
-	</view> -->
+	</view>
 </template>
 
 <script>
@@ -250,6 +191,9 @@
 		background-color: red;
 		display: flex;
 		.editor-left {
+			margin: 16px;
+		}
+		.editor-right {
 			margin: 16px;
 		}
 	}
