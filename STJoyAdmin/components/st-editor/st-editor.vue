@@ -1,12 +1,72 @@
 <template>
 	<view class="st-editor">
 		<view class="editor-left">
-			<view class="phone-box">
-				<view class="phone-bar"></view>
-				<view class="phone-content">
-					春节前夕，习近平总书记在天津考察调研，看望慰问基层干部群众。2月1日上午，他首先来到西青区辛口镇第六埠村，实地了解去年洪涝灾害后当地农业生产恢复等情况，看望受灾群众。当天下午，他来到天津古文化街，察看节日市场供应和历史文化街区保护利用等情况。
-				</view>
-			</view>
+			<st-phone>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+				<view>支持的视频格式</view>
+			</st-phone>
 		</view>
 		<view class="editor-right">123</view>
 	</view>
@@ -189,28 +249,8 @@
 	.st-editor {
 		background-color: red;
 		display: flex;
-
 		.editor-left {
-			width: 454px;
-			height: 936px;
-			background-color: green;
-
-			.phone-box {
-				background-color: #fff;
-				border-radius: 50px;
-				width: 414px;
-				height: 896px;
-				border: 20px solid #1D1D1D;
-				
-				.phone-bar{
-					background-color: #1D1D1D;
-					width: 224px;
-					height: 32px;
-					border-bottom-left-radius: 32px;
-					border-bottom-right-radius: 32px;
-					margin: 0 auto;
-				}
-			}
+			margin: 16px;
 		}
 	}
 
