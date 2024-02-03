@@ -6,15 +6,29 @@
 			</st-phone>
 		</view>
 		<view class="editor-right">
-			<view class="box">
-				
+			{{editorCtx}} {{formats}}
+			<view class="st-edit-tool" @tap="format">
+				<uni-row>
+					<view>文字色:主要色、次要色、描述色、禁用与占位色。</view>
+					<view v-for="value in textColors" :key="value" :style="{ 'color': value}" class="iconfont icon-text_color"
+						data-name="color" :data-value="value">
+							<view  :class="{'select': formats.color === value}">
+								
+							</view>
+						</view>
+				</uni-row>
+			</view>
+			<view class="editor-wrapper">
+				<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
+					@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
+				</editor>
 			</view>
 		</view>
 	</view>
-		<view class="container">
+	<!-- 	<view class="container">
 		<view class="page-body">
 			<view class='wrapper'>
-				<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
+								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 					
 					<view :class="formats.bold ? 'ql-active' : ''" class="iconfont icon-zitijiacu" data-name="bold"></view>
 					<view :class="formats.italic ? 'ql-active' : ''" class="iconfont icon-zitixieti" data-name="italic"></view>
@@ -76,8 +90,8 @@
 				</view>
 
 				<view class="editor-wrapper">
-					<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar
-						show-img-resize @statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
+					<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
+						@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
 					</editor>
 				</view>
 				<view>
@@ -85,7 +99,7 @@
 				</view>
 			</view>
 		</view>
-	</view>
+	</view> -->
 </template>
 
 <script>
@@ -93,7 +107,13 @@
 		data() {
 			return {
 				readOnly: false,
-				formats: {}
+				formats: {},
+				textColors: [
+					"#171a1d",
+					"#747678",
+					"#a2a3a4",
+					"#c7c8c9",
+				]
 			}
 		},
 		methods: {
@@ -190,15 +210,32 @@
 	.st-editor {
 		background-color: red;
 		display: flex;
+
 		.editor-left {
 			margin: 16px;
 		}
+
 		.editor-right {
 			margin: 16px;
+			width: 414px;
+			background-color: #fff;
+
+			.st-edit-tool {
+				.iconfont{
+					position: relative;
+				}
+				.select {
+					position: absolute;
+					top: 8px;
+					right: 8px;
+					background-color: red;
+					width: 8px;
+					height: 8px;
+					border-radius: 4px;
+				}
+			}
 		}
 	}
-
-
 
 	.page-body {
 		height: calc(100vh - var(--window-top) - var(--status-bar-height));
