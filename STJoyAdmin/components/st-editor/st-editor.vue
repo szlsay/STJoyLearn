@@ -14,6 +14,7 @@
 						<view :class="{'select': onSelect(item)}">
 						</view>
 					</view>
+					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
 				</uni-row>
 			</view>
 			<view class="editor-wrapper">
@@ -28,14 +29,7 @@
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 					
-				
 
-					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
-
-					<view :class="formats.fontSize === '24px' ? 'ql-active' : ''" class="iconfont icon-fontsize"
-						data-name="fontSize" data-value="24px"></view>
-					<view :class="formats.color === '#0000ff' ? 'ql-active' : ''" class="iconfont icon-text_color"
-						data-name="color" data-value="#0000ff"></view>
 					<view :class="formats.backgroundColor === '#00ff00' ? 'ql-active' : ''"
 						class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#00ff00"></view>
 						
@@ -207,7 +201,39 @@
 						name: 'marginBottom',
 						value: '20px',
 						iconClass: 'iconfont icon-723bianjiqi_duanhouju'
-					}
+					},
+					{
+						name: 'fontSize',
+						value: '14px',
+						iconClass: 'iconfont icon-fontsize',
+						style: {
+							fontSize: '14px',
+						}
+					},
+					{
+						name: 'fontSize',
+						value: '16px',
+						iconClass: 'iconfont icon-fontsize',
+						style: {
+							fontSize: '16px',
+						}
+					},
+					{
+						name: 'fontSize',
+						value: '18px',
+						iconClass: 'iconfont icon-fontsize',
+						style: {
+							fontSize: '18px',
+						}
+					},
+					{
+						name: 'fontSize',
+						value: '20px',
+						iconClass: 'iconfont icon-fontsize',
+						style: {
+							fontSize: '20px',
+						}
+					},
 				],
 				textColors: [
 					"#171a1d",
