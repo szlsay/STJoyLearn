@@ -15,6 +15,8 @@
 						</view>
 					</view>
 					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
+					<view class="iconfont icon-undo" @tap="undo"></view>
+					<view class="iconfont icon-redo" @tap="redo"></view>
 				</uni-row>
 			</view>
 			<view class="editor-wrapper">
@@ -28,19 +30,8 @@
 		<view class="page-body">
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
-					
-
-					<view :class="formats.backgroundColor === '#00ff00' ? 'ql-active' : ''"
-						class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#00ff00"></view>
-						
-						
-
-						
-					<view class="iconfont icon--checklist" data-name="list" data-value="check"></view>
-					<view :class="formats.list === 'ordered' ? 'ql-active' : ''" class="iconfont icon-youxupailie"
-						data-name="list" data-value="ordered"></view>
-					<view :class="formats.list === 'bullet' ? 'ql-active' : ''" class="iconfont icon-wuxupailie"
-						data-name="list" data-value="bullet"></view>
+								
+		
 
 					<view class="iconfont icon-undo" @tap="undo"></view>
 					<view class="iconfont icon-redo" @tap="redo"></view>
@@ -248,13 +239,22 @@
 							fontSize: '20px',
 						}
 					},
+					{
+						name: 'list',
+						value: 'check',
+						iconClass: 'iconfont icon--checklist'
+					},
+					{
+						name: 'list',
+						value: 'ordered',
+						iconClass: 'iconfont icon-youxupailie'
+					},
+					{
+						name: 'list',
+						value: 'bullet',
+						iconClass: 'iconfont icon-wuxupailie'
+					},
 				],
-				textColors: [
-					"#171a1d",
-					"#747678",
-					"#a2a3a4",
-					"#c7c8c9",
-				]
 			}
 		},
 		methods: {
