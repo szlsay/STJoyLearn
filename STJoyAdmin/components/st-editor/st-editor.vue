@@ -28,10 +28,6 @@
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 					
-					<view :class="formats.bold ? 'ql-active' : ''" class="iconfont icon-zitijiacu" data-name="bold"></view>
-					<view :class="formats.italic ? 'ql-active' : ''" class="iconfont icon-zitixieti" data-name="italic"></view>
-					<view :class="formats.underline ? 'ql-active' : ''" class="iconfont icon-zitixiahuaxian" data-name="underline"></view>
-					<view :class="formats.strike ? 'ql-active' : ''" class="iconfont icon-zitishanchuxian" data-name="strike"></view>
 
 					<view :class="formats.align === 'left' ? 'ql-active' : ''" class="iconfont icon-zuoduiqi"
 						data-name="align" data-value="left"></view>
@@ -178,6 +174,36 @@
 						name: 'italic',
 						value: 'italic',
 						iconClass: 'iconfont icon-zitixieti'
+					},
+					{
+						name: 'underline',
+						value: 'underline',
+						iconClass: 'iconfont icon-zitixiahuaxian'
+					},
+					{
+						name: 'strike',
+						value: 'strike',
+						iconClass: 'iconfont icon-zitishanchuxian'
+					},
+					{
+						name: 'align',
+						value: 'left',
+						iconClass: 'iconfont icon-zuoduiqi'
+					},
+					{
+						name: 'align',
+						value: 'center',
+						iconClass: 'iconfont icon-juzhongduiqi'
+					},
+					{
+						name: 'align',
+						value: 'right',
+						iconClass: 'iconfont icon-youduiqi'
+					},
+					{
+						name: 'align',
+						value: 'justify',
+						iconClass: 'iconfont icon-zuoyouduiqi'
 					}
 				],
 				textColors: [
