@@ -28,24 +28,7 @@
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 					
-
-					<view :class="formats.align === 'left' ? 'ql-active' : ''" class="iconfont icon-zuoduiqi"
-						data-name="align" data-value="left"></view>
-					<view :class="formats.align === 'center' ? 'ql-active' : ''" class="iconfont icon-juzhongduiqi"
-						data-name="align" data-value="center"></view>
-					<view :class="formats.align === 'right' ? 'ql-active' : ''" class="iconfont icon-youduiqi"
-						data-name="align" data-value="right"></view>
-					<view :class="formats.align === 'justify' ? 'ql-active' : ''" class="iconfont icon-zuoyouduiqi"
-						data-name="align" data-value="justify"></view>
-						
-					<view :class="formats.lineHeight ? 'ql-active' : ''" class="iconfont icon-line-height"
-						data-name="lineHeight" data-value="2"></view>
-					<view :class="formats.letterSpacing ? 'ql-active' : ''" class="iconfont icon-Character-Spacing"
-						data-name="letterSpacing" data-value="2em"></view>
-					<view :class="formats.marginTop ? 'ql-active' : ''" class="iconfont icon-722bianjiqi_duanqianju"
-						data-name="marginTop" data-value="20px"></view>
-					<view :class="formats.marginBottom ? 'ql-active' : ''" class="iconfont icon-723bianjiqi_duanhouju"
-						data-name="marginBottom" data-value="20px"></view>
+				
 
 					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
 
@@ -204,6 +187,26 @@
 						name: 'align',
 						value: 'justify',
 						iconClass: 'iconfont icon-zuoyouduiqi'
+					},
+					{
+						name: 'lineHeight',
+						value: '2',
+						iconClass: 'iconfont icon-line-height'
+					},
+					{
+						name: 'letterSpacing',
+						value: '2em',
+						iconClass: 'iconfont icon-Character-Spacing'
+					},
+					{
+						name: 'marginTop',
+						value: '20px',
+						iconClass: 'iconfont icon-722bianjiqi_duanqianju'
+					},
+					{
+						name: 'marginBottom',
+						value: '20px',
+						iconClass: 'iconfont icon-723bianjiqi_duanhouju'
 					}
 				],
 				textColors: [
