@@ -34,8 +34,7 @@
 						class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#00ff00"></view>
 						
 						
-						<view style="color: red;"
-							class="iconfont icon-fontbgcolor" data-name="backgroundColor" data-value="#ff0000"></view>
+
 						
 					<view class="iconfont icon--checklist" data-name="list" data-value="check"></view>
 					<view :class="formats.list === 'ordered' ? 'ql-active' : ''" class="iconfont icon-youxupailie"
@@ -79,7 +78,7 @@
 			return {
 				readOnly: false,
 				formats: {
-					"color": "#c7c8c9"
+					"color": "#007fff"
 				},
 				listFormat: [{
 						name: 'color',
@@ -99,22 +98,6 @@
 					},
 					{
 						name: 'color',
-						value: '#a2a3a4',
-						iconClass: 'iconfont icon-text_color',
-						style: {
-							color: '#a2a3a4',
-						}
-					},
-					{
-						name: 'color',
-						value: '#c7c8c9',
-						iconClass: 'iconfont icon-text_color',
-						style: {
-							color: '#c7c8c9',
-						}
-					},
-					{
-						name: 'color',
 						value: '#007fff',
 						iconClass: 'iconfont icon-text_color',
 						style: {
@@ -129,15 +112,46 @@
 						}
 					}, {
 						name: 'color',
-						value: '#ff9200',
-						iconClass: 'iconfont icon-text_color',
-						style: {
-							color: '#ff9200',
-						}
-					}, {
-						name: 'color',
 						value: '#ff5219',
 						iconClass: 'iconfont icon-text_color',
+						style: {
+							color: '#ff5219',
+						}
+					},
+					{
+						name: 'backgroundColor',
+						value: '#171a1d',
+						iconClass: 'iconfont icon-fontbgcolor',
+						style: {
+							color: '#171a1d'
+						}
+					},
+					{
+						name: 'backgroundColor',
+						value: '#747678',
+						iconClass: 'iconfont icon-fontbgcolor',
+						style: {
+							color: '#747678'
+						}
+					},
+					{
+						name: 'backgroundColor',
+						value: '#007fff',
+						iconClass: 'iconfont icon-fontbgcolor',
+						style: {
+							color: '#007fff',
+						}
+					}, {
+						name: 'backgroundColor',
+						value: '#00b042',
+						iconClass: 'iconfont icon-fontbgcolor',
+						style: {
+							color: '#00b042',
+						}
+					}, {
+						name: 'backgroundColor',
+						value: '#ff5219',
+						iconClass: 'iconfont icon-fontbgcolor',
 						style: {
 							color: '#ff5219',
 						}
