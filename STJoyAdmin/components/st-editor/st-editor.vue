@@ -25,6 +25,7 @@
 				<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
 					@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
 				</editor>
+				<button @tap="getCon">打印文本内容</button>
 			</view>
 		</view>
 	</view>
@@ -33,16 +34,7 @@
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 								
-					<view :class="formats.script === 'super' ? 'ql-active' : ''" class="iconfont icon-zitishangbiao"
-						data-name="script" data-value="super"></view>
 
-					<view class="iconfont icon-shanchu" @tap="clear"></view>
-				</view>
-
-				<view class="editor-wrapper">
-					<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
-						@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
-					</editor>
 				</view>
 				<view>
 					<button @tap="getCon">打印文本内容</button>
