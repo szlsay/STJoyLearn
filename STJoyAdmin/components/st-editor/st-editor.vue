@@ -12,10 +12,10 @@
 					<view>文字色:主要色、次要色、描述色、禁用与占位色。</view>
 					<view v-for="value in textColors" :key="value" :style="{ 'color': value}" class="iconfont icon-text_color"
 						data-name="color" :data-value="value">
-							<view  :class="{'select': formats.color === value}">
-								
-							</view>
+						<view :class="{'select': formats.color === value}">
+
 						</view>
+					</view>
 				</uni-row>
 			</view>
 			<view class="editor-wrapper">
@@ -107,7 +107,9 @@
 		data() {
 			return {
 				readOnly: false,
-				formats: {},
+				formats: {
+					"color": "#c7c8c9"
+				},
 				textColors: [
 					"#171a1d",
 					"#747678",
@@ -115,6 +117,9 @@
 					"#c7c8c9",
 				]
 			}
+		},
+		onShow: function() {
+			console.log('000 Show')
 		},
 		methods: {
 			readOnlyChange() {
@@ -131,8 +136,13 @@
 				})
 			},
 			onEditorReady() {
+				console.log('onEditorReady0');
 				uni.createSelectorQuery().select('#editor').context((res) => {
+					console.log('onEditorReady1', res);
 					this.editorCtx = res.context
+					for (let key in this.formats) {
+						this.editorCtx.format(key, this.formats[key])
+					}
 				}).exec()
 			},
 			undo() {
@@ -221,9 +231,10 @@
 			background-color: #fff;
 
 			.st-edit-tool {
-				.iconfont{
+				.iconfont {
 					position: relative;
 				}
+
 				.select {
 					position: absolute;
 					top: 8px;
