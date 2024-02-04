@@ -9,7 +9,7 @@
 			{{editorCtx}} {{formats}}
 			<view class="st-edit-tool" @tap="format">
 				<uni-row>
-					<view>文字色:主要色、次要色、描述色、禁用与占位色。</view>
+					<!-- <view>文字色:主要色、次要色、描述色、禁用与占位色。</view> -->
 					<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
 						:data-name="item.name" :data-value="item.value">
 						<view :class="{'select': formats[item.name] === item.value}">
@@ -141,7 +141,36 @@
 						style: {
 							color: '#c7c8c9',
 						}
-					}
+					},
+					{
+						name: 'color',
+						value: '#007fff',
+						iconClass: 'iconfont icon-text_color',
+						style: {
+							color: '#007fff',
+						}
+					}, {
+						name: 'color',
+						value: '#00b042',
+						iconClass: 'iconfont icon-text_color',
+						style: {
+							color: '#00b042',
+						}
+					}, {
+						name: 'color',
+						value: '#ff9200',
+						iconClass: 'iconfont icon-text_color',
+						style: {
+							color: '#ff9200',
+						}
+					}, {
+						name: 'color',
+						value: '#ff5219',
+						iconClass: 'iconfont icon-text_color',
+						style: {
+							color: '#ff5219',
+						}
+					},
 				],
 				textColors: [
 					"#171a1d",
