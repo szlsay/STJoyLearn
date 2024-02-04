@@ -6,14 +6,12 @@
 			</st-phone>
 		</view>
 		<view class="editor-right">
-			{{editorCtx}} {{formats}}
 			<view class="st-edit-tool" @tap="format">
 				<uni-row>
-					<!-- <view>文字色:主要色、次要色、描述色、禁用与占位色。</view> -->
+					{{formats}}
 					<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
 						:data-name="item.name" :data-value="item.value">
-						<view :class="{'select': formats[item.name] === item.value}">
-
+						<view :class="{'select': onSelect(item)}">
 						</view>
 					</view>
 				</uni-row>
@@ -171,6 +169,16 @@
 							color: '#ff5219',
 						}
 					},
+					{
+						name: 'bold',
+						value: 'bold',
+						iconClass: 'iconfont icon-zitijiacu'
+					},
+					{
+						name: 'italic',
+						value: 'italic',
+						iconClass: 'iconfont icon-zitixieti'
+					}
 				],
 				textColors: [
 					"#171a1d",
@@ -180,10 +188,17 @@
 				]
 			}
 		},
-		onShow: function() {
-			console.log('000 Show')
-		},
 		methods: {
+			onSelect(item) {
+				const value = this.formats[item.name]
+				if (typeof value === 'boolean') {
+					return value
+				} else if (typeof value === 'string') {
+					return value === item.value
+				} else {
+					return false
+				}
+			},
 			readOnlyChange() {
 				this.readOnly = !this.readOnly
 			},
