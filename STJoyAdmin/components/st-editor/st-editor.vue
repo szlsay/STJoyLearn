@@ -8,7 +8,6 @@
 		<view class="editor-right">
 			<view class="st-edit-tool" @tap="format">
 				<uni-row>
-					{{formats}}
 					<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
 						:data-name="item.name" :data-value="item.value">
 						<view :class="{'select': onSelect(item)}">
@@ -17,6 +16,9 @@
 					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
 					<view class="iconfont icon-undo" @tap="undo"></view>
 					<view class="iconfont icon-redo" @tap="redo"></view>
+					<view class="iconfont icon-fengexian" @tap="insertDivider"></view>
+					<view class="iconfont icon-charutupian" @tap="insertImage"></view>
+						<view class="iconfont icon-shanchu" @tap="clear"></view>
 				</uni-row>
 			</view>
 			<view class="editor-wrapper">
@@ -31,19 +33,6 @@
 			<view class='wrapper'>
 								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
 								
-		
-
-					<view class="iconfont icon-undo" @tap="undo"></view>
-					<view class="iconfont icon-redo" @tap="redo"></view>
-
-					<view class="iconfont icon-outdent" data-name="indent" data-value="-1"></view>
-					<view class="iconfont icon-indent" data-name="indent" data-value="+1"></view>
-					<view class="iconfont icon-fengexian" @tap="insertDivider"></view>
-					<view class="iconfont icon-charutupian" @tap="insertImage"></view>
-					<view :class="formats.header === 1 ? 'ql-active' : ''" class="iconfont icon-format-header-1"
-						data-name="header" :data-value="1"></view>
-					<view :class="formats.script === 'sub' ? 'ql-active' : ''" class="iconfont icon-zitixiabiao"
-						data-name="script" data-value="sub"></view>
 					<view :class="formats.script === 'super' ? 'ql-active' : ''" class="iconfont icon-zitishangbiao"
 						data-name="script" data-value="super"></view>
 
@@ -240,9 +229,24 @@
 						}
 					},
 					{
-						name: 'list',
-						value: 'check',
-						iconClass: 'iconfont icon--checklist'
+						name: 'header',
+						value: '1',
+						iconClass: 'iconfont icon-format-header-1'
+					},
+					{
+						name: 'header',
+						value: '2',
+						iconClass: 'iconfont icon-format-header-2'
+					},
+					{
+						name: 'header',
+						value: '3',
+						iconClass: 'iconfont icon-format-header-3'
+					},
+					{
+						name: 'header',
+						value: '4',
+						iconClass: 'iconfont icon-format-header-4'
 					},
 					{
 						name: 'list',
@@ -254,16 +258,29 @@
 						value: 'bullet',
 						iconClass: 'iconfont icon-wuxupailie'
 					},
+					{
+						name: 'indent',
+						value: '-1',
+						iconClass: 'iconfont icon-outdent'
+					},
+					{
+						name: 'indent',
+						value: '+1',
+						iconClass: 'iconfont icon-indent'
+					},
 				],
 			}
 		},
 		methods: {
 			onSelect(item) {
 				const value = this.formats[item.name]
+				console.log(value, typeof value, item.value)
 				if (typeof value === 'boolean') {
 					return value
 				} else if (typeof value === 'string') {
 					return value === item.value
+				} else if (typeof value === 'number') {
+					return value.toString() === item.value
 				} else {
 					return false
 				}
