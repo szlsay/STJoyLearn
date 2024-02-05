@@ -2,7 +2,7 @@
 	<view class="st-editor">
 		<view class="editor-left">
 			<st-phone>
-				<view></view>
+				<view v-html='editorHtml'></view>
 			</st-phone>
 		</view>
 		<view class="editor-right">
@@ -35,9 +35,10 @@
 	export default {
 		data() {
 			return {
+				editorHtml: null,
 				readOnly: false,
 				formats: {
-					"color": "#007fff"
+					"color": "#171a1d"
 				},
 				listFormat: [{
 						name: 'color',
@@ -253,7 +254,6 @@
 		methods: {
 			onSelect(item) {
 				const value = this.formats[item.name]
-				console.log(value, typeof value, item.value)
 				if (typeof value === 'boolean') {
 					return value
 				} else if (typeof value === 'string') {
@@ -271,6 +271,7 @@
 				this.editorCtx.getContents({
 					success: (res) => {
 						console.log('文本详情：', res)
+						this.editorHtml = res.html
 					},
 					fail: (err) => {
 						// console.log(err)
