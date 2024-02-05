@@ -8,7 +8,7 @@
 					</st-phone>
 				</view>
 				<view class="editor-right">
-					<st-editor @finish='onFinish'></st-editor>
+					<st-editor ref="editor" @finish='onFinish'></st-editor>
 				</view>
 			</view>
 			<view class="box-right">
@@ -80,6 +80,10 @@
 						"title": row.title,
 						"content": row.content
 					}
+					const that = this
+					this.$nextTick(() => {
+						that.$refs.editor.setContent(that.formData.content)
+					})
 				} else {
 					this.formDataId = null
 				}
@@ -98,6 +102,7 @@
 				})
 			},
 			submitForm(value) {
+				value.content = this.formData.content
 				let requestHandle
 				if (this.formDataId) {
 					requestHandle = uniCloud.importObject("ylnote").update(this.formDataId, value)

@@ -281,6 +281,11 @@
 					}
 				}).exec()
 			},
+			setContent(content) {
+				if (content) {
+					this.editorCtx.setContents(content)
+				}
+			},
 			undo() {
 				this.editorCtx.undo()
 			},
