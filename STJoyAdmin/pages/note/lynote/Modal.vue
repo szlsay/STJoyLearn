@@ -82,7 +82,7 @@
 					}
 					const that = this
 					this.$nextTick(() => {
-						that.$refs.editor.setContent(that.formData.content)
+						that.$refs.editor.setContents(that.formData.content)
 					})
 				} else {
 					this.formDataId = null

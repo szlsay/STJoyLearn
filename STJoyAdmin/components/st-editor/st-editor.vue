@@ -17,8 +17,8 @@
 			</uni-row>
 		</view>
 		<view class="st-edit-box">
-			<editor id="editor" class="wrapper" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
-				@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
+			<editor :content.sync="editorHtml" id="editor" class="wrapper" placeholder="开始输入..." show-img-size
+				show-img-toolbar show-img-resize @statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
 			</editor>
 		</view>
 
@@ -268,9 +268,7 @@
 						this.editorHtml = res.html
 						this.$emit('finish', this.editorHtml)
 					},
-					fail: (err) => {
-						// console.log(err)
-					}
+					fail: (err) => {}
 				})
 			},
 			onEditorReady() {
@@ -281,9 +279,13 @@
 					}
 				}).exec()
 			},
-			setContent(content) {
-				if (content) {
-					this.editorCtx.setContents(content)
+			setContents(html) {
+				if (html) {
+					this.editorCtx.setContents({
+						html,
+						success: (res) => {},
+						fail: (err) => {}
+					})
 				}
 			},
 			undo() {

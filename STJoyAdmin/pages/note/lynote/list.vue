@@ -71,14 +71,14 @@
 						prop: 'title',
 						type: 'string'
 					},
-					{
-						align: 'center',
-						filterType: 'search',
-						title: '文章内容',
-						event: 'content',
-						prop: 'content',
-						type: 'string'
-					},
+					// {
+					// 	align: 'center',
+					// 	filterType: 'search',
+					// 	title: '文章内容',
+					// 	event: 'content',
+					// 	prop: 'content',
+					// 	type: 'string'
+					// },
 					{
 						align: 'center',
 						filterType: 'search',
