@@ -1,20 +1,30 @@
 <template>
 	<uni-popup ref="popup" type="center" :animation="false" :is-mask-click="false">
 		<view class="popup-box">
-			<view class="title">{{ formDataId ? "修改日记 " : "新增日记" }}</view>
-			<uni-forms ref="form" :model="formData" validateTrigger="bind">
-				<uni-forms-item name="title" label="标题">
-					<uni-easyinput placeholder="标题" v-model="formData.title" trim="both"></uni-easyinput>
-				</uni-forms-item>
-				<uni-forms-item name="content" label="文章内容">
-					<uni-easyinput placeholder="文章内容" v-model="formData.content" trim="right"></uni-easyinput>
-				</uni-forms-item>
-				<editor #editor></editor>
-				<view class="uni-button-group">
-					<button class="uni-button" style="width: 100px;" @click="close">关闭</button>
-					<button type="primary" class="uni-button" style="width: 100px; margin-left: 15px;" @click="submit">提交</button>
+			<view class="box-left">
+				<view class="editor-left">
+					<st-phone>
+						<view v-html='formData.content'></view>
+					</st-phone>
 				</view>
-			</uni-forms>
+				<view class="editor-right">
+					<st-editor @finish='onFinish'></st-editor>
+				</view>
+			</view>
+			<view class="box-right">
+				<view class="title">{{ formDataId ? "修改日记 " : "新增日记" }}</view>
+				<uni-forms ref="form" :model="formData" validateTrigger="bind">
+					<uni-forms-item name="title" label="标题">
+						<uni-easyinput placeholder="标题" type="textarea" v-model="formData.title" trim="both"></uni-easyinput>
+					</uni-forms-item>
+
+					<view class="uni-button-group">
+						<button class="uni-button" style="width: 100px;" @click="close">关闭</button>
+						<button type="primary" class="uni-button" style="width: 100px; margin-left: 15px;"
+							@click="submit">提交</button>
+					</view>
+				</uni-forms>
+			</view>
 		</view>
 	</uni-popup>
 </template>
@@ -46,15 +56,13 @@
 				}
 			}
 		},
-		onEditorReady() {
-			uni.createSelectorQuery().select('#editor').context((res) => {
-				this.editorCtx = res.context
-			}).exec()
-		},
 		onReady() {
 			this.$refs.form.setRules(this.rules)
 		},
 		methods: {
+			onFinish(editorHtml) {
+				this.formData.content = editorHtml
+			},
 			add() {
 				this.edit({
 					_id: null
@@ -116,8 +124,9 @@
 <style lang="scss" scoped>
 	.popup-box {
 		background-color: #fff;
-		min-width: 500px;
-		padding: 32px;
+		display: flex;
+		// min-width: 500px;
+		// padding: 32px;
 		border-radius: 8px;
 
 		.title {
@@ -125,8 +134,21 @@
 			margin-bottom: 20px;
 		}
 	}
-	#editor{
-		width: 200px;
-		height: 300px;
+
+	.box-right {
+		padding: 32px;
+		min-width: 400px;
+	}
+	
+	.box-left {
+		display: flex;
+
+		.editor-left {
+			margin: 16px;
+		}
+
+		.editor-right {
+			margin: 16px;
+		}
 	}
 </style>

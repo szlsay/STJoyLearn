@@ -1,33 +1,27 @@
 <template>
 	<view class="st-editor">
-		<view class="editor-left">
-			<st-phone>
-				<view v-html='editorHtml'></view>
-			</st-phone>
-		</view>
-		<view class="editor-right">
-			<button @tap="getCon">预览效果</button>
-			<view class="st-edit-tool" @tap="format">
-				<uni-row>
-					<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
-						:data-name="item.name" :data-value="item.value">
-						<view :class="{'select': onSelect(item)}">
-						</view>
+		<button type="primary" @tap="getCon">预览效果</button>
+		<view class="st-edit-tool" @tap="format">
+			<uni-row>
+				<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
+					:data-name="item.name" :data-value="item.value">
+					<view :class="{'select': onSelect(item)}">
 					</view>
-					<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
-					<view class="iconfont icon-undo" @tap="undo"></view>
-					<view class="iconfont icon-redo" @tap="redo"></view>
-					<view class="iconfont icon-fengexian" @tap="insertDivider"></view>
-					<view class="iconfont icon-charutupian" @tap="insertImage"></view>
-					<view class="iconfont icon-shanchu" @tap="clear"></view>
-				</uni-row>
-			</view>
-			<view class="st-edit-box">
-				<editor id="editor" class="wrapper" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
-					@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
-				</editor>
-			</view>
+				</view>
+				<view class="iconfont icon-clearedformat" @tap="removeFormat"></view>
+				<view class="iconfont icon-undo" @tap="undo"></view>
+				<view class="iconfont icon-redo" @tap="redo"></view>
+				<view class="iconfont icon-fengexian" @tap="insertDivider"></view>
+				<view class="iconfont icon-charutupian" @tap="insertImage"></view>
+				<view class="iconfont icon-shanchu" @tap="clear"></view>
+			</uni-row>
 		</view>
+		<view class="st-edit-box">
+			<editor id="editor" class="wrapper" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
+				@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
+			</editor>
+		</view>
+
 	</view>
 </template>
 
@@ -272,6 +266,7 @@
 					success: (res) => {
 						console.log('文本详情：', res)
 						this.editorHtml = res.html
+						this.$emit('finish', this.editorHtml)
 					},
 					fail: (err) => {
 						// console.log(err)
@@ -279,9 +274,7 @@
 				})
 			},
 			onEditorReady() {
-				console.log('onEditorReady0');
 				uni.createSelectorQuery().select('#editor').context((res) => {
-					console.log('onEditorReady1', res);
 					this.editorCtx = res.context
 					for (let key in this.formats) {
 						this.editorCtx.format(key, this.formats[key])
@@ -361,41 +354,33 @@
 	@import "./editor-icon.css";
 
 	.st-editor {
-		background-color: red;
-		display: flex;
+		width: 414px;
+		height: 800px;
+		background-color: #fff;
+		border: 1px solid #eee;
 
-		.editor-left {
-			margin: 16px;
+		.st-edit-box {
+			height: 560px;
+			overflow-y: auto;
+
+			.wrapper {
+				height: 100%;
+			}
 		}
 
-		.editor-right {
-			margin: 16px;
-			width: 414px;
-			height: 800px;
-			background-color: #fff;
-
-			.st-edit-box {
-				height: 560px;
-				overflow-y: auto;
-				.wrapper {
-					height: 100%;
-				}
+		.st-edit-tool {
+			.iconfont {
+				position: relative;
 			}
 
-			.st-edit-tool {
-				.iconfont {
-					position: relative;
-				}
-
-				.select {
-					position: absolute;
-					top: 8px;
-					right: 8px;
-					background-color: red;
-					width: 8px;
-					height: 8px;
-					border-radius: 4px;
-				}
+			.select {
+				position: absolute;
+				top: 8px;
+				right: 8px;
+				background-color: red;
+				width: 8px;
+				height: 8px;
+				border-radius: 4px;
 			}
 		}
 	}
@@ -408,5 +393,4 @@
 		cursor: pointer;
 		font-size: 20px;
 	}
-
 </style>
