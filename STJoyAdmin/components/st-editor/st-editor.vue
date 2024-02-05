@@ -6,6 +6,7 @@
 			</st-phone>
 		</view>
 		<view class="editor-right">
+			<button @tap="getCon">预览效果</button>
 			<view class="st-edit-tool" @tap="format">
 				<uni-row>
 					<view v-for="(item, index) in listFormat" :key="index" :style="item.style" :class="item.iconClass"
@@ -18,30 +19,16 @@
 					<view class="iconfont icon-redo" @tap="redo"></view>
 					<view class="iconfont icon-fengexian" @tap="insertDivider"></view>
 					<view class="iconfont icon-charutupian" @tap="insertImage"></view>
-						<view class="iconfont icon-shanchu" @tap="clear"></view>
+					<view class="iconfont icon-shanchu" @tap="clear"></view>
 				</uni-row>
 			</view>
-			<view class="editor-wrapper">
-				<editor id="editor" class="ql-container" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
+			<view class="st-edit-box">
+				<editor id="editor" class="wrapper" placeholder="开始输入..." show-img-size show-img-toolbar show-img-resize
 					@statuschange="onStatusChange" :read-only="readOnly" @ready="onEditorReady">
 				</editor>
-				<button @tap="getCon">打印文本内容</button>
 			</view>
 		</view>
 	</view>
-	<!-- 	<view class="container">
-		<view class="page-body">
-			<view class='wrapper'>
-								<view class='toolbar' @tap="format" style="height: 80px;overflow-y: auto;">
-								
-
-				</view>
-				<view>
-					<button @tap="getCon">打印文本内容</button>
-				</view>
-			</view>
-		</view>
-	</view> -->
 </template>
 
 <script>
@@ -383,7 +370,16 @@
 		.editor-right {
 			margin: 16px;
 			width: 414px;
+			height: 800px;
 			background-color: #fff;
+
+			.st-edit-box {
+				height: 560px;
+				overflow-y: auto;
+				.wrapper {
+					height: 100%;
+				}
+			}
 
 			.st-edit-tool {
 				.iconfont {
@@ -403,19 +399,6 @@
 		}
 	}
 
-	.page-body {
-		height: calc(100vh - var(--window-top) - var(--status-bar-height));
-	}
-
-	.wrapper {
-		height: 100%;
-	}
-
-	.editor-wrapper {
-		height: calc(100vh - var(--window-top) - var(--status-bar-height) - 80px - 46px);
-		background: #fff;
-	}
-
 	.iconfont {
 		display: inline-block;
 		padding: 8px 8px;
@@ -425,24 +408,4 @@
 		font-size: 20px;
 	}
 
-	.toolbar {
-		box-sizing: border-box;
-		border-bottom: 0;
-		font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-	}
-
-	.ql-container {
-		box-sizing: border-box;
-		padding: 12px 15px;
-		width: 100%;
-		min-height: 30vh;
-		height: 100%;
-		/* margin-top: 20px; */
-		font-size: 16px;
-		line-height: 1.5;
-	}
-
-	.ql-active {
-		color: #06c;
-	}
 </style>
