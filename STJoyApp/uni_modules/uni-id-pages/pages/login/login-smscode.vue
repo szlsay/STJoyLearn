@@ -16,7 +16,8 @@
 	</view>
 </template>
 <script>
-	import mixin from '@/uni_modules/uni-id-pages/common/login-page.mixin.js';
+	import mixin from '../common/login-page.mixin.js';
+	
 	export default {
 		mixins: [mixin],
 		data() {
