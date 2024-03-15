@@ -48,6 +48,7 @@
 		</view>
 	</view>
 	<Modal ref="modal" @finish="onLoad"></Modal>
+	<ModuleEdit ref="moduleEdit"></ModuleEdit>
 </template>
 
 <script>
@@ -56,10 +57,12 @@
 		exportData
 	} from '@/js_sdk/tool/index.js'
 	import Modal from './Modal.vue'
+	import ModuleEdit from './ModuleEdit.vue'
 	const cn = "ly-note"
 	export default {
 		components: {
-			Modal
+			Modal,
+			ModuleEdit
 		},
 		data() {
 			return {
@@ -144,7 +147,7 @@
 				this.onLoad()
 			},
 			onAdd() {
-				this.$refs.modal.add()
+				this.$refs.moduleEdit.add()
 			},
 			onEdit(row) {
 				this.$refs.modal.edit(row)
